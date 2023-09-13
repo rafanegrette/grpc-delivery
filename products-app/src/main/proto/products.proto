@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option java_package = "com.perficient.models";
+option java_multiple_files = true;
+
+message MenuRequest {
+  int32 menu_id = 1;
+}
+
+message MenuResponse {
+  int32 product_id = 1;
+  int32 menu_id = 2;
+  string name = 3;
+  int32 price = 4;
+}
+
+service FetchProducts {
+  rpc products(MenuRequest) returns (MenuResponse) {}
+  rpc productsStream(MenuRequest) returns (stream MenuResponse) {}
+}
