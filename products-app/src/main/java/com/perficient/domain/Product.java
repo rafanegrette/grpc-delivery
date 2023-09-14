@@ -1,4 +1,11 @@
 package com.perficient.domain;
 
-public record Product(int id, int menu_id, String name, int price) {
+public class Product {
+    int id;
+    int restaurantId;
+    String name;
+    Category category;
+    Boolean available;
+    int price;
+    float discount;
 }
