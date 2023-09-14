@@ -6,17 +6,3 @@ group = 'com.perficient'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
-
-allprojects {
-	repositories {
-		mavenCentral()
-	}
-
-	tasks.withType(Test.class).tap {
-		configureEach {
-			useJUnitPlatform()
-		}
-	}
-}
-
-
