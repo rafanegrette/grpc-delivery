@@ -1,0 +1,10 @@
+package com.perficient.domain.ports.in;
+
+import java.util.Optional;
+import com.perficient.domain.models.Invoice;
+import java.util.List;
+
+public interface RetriveInvoiceUseCase {
+  Optional<Invoice> getInvoice(Long id);
+  List<Invoice> getAllInvoices();
+}

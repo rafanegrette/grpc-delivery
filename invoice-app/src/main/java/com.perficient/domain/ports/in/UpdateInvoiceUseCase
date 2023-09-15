@@ -1,0 +1,8 @@
+package com.perficient.domain.ports.in;
+
+import java.util.Optional;
+import com.perficient.domain.models.Invoice;
+
+public interface UpdateInvoiceUseCase {
+  Optional<Invoice> updateInvoice(Long id, Invoice updateInvoice);
+}

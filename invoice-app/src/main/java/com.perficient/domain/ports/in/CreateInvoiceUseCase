@@ -1,0 +1,7 @@
+package com.perficient.domain.ports.in;
+
+import com.perficient.domain.models.Invoice;
+
+public interface CreateInvoiceUseCase {
+  Invoice createInvoice(Invoice invoice);
+}
