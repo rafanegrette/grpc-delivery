@@ -1,4 +1,4 @@
-package com.perficient.domain;
+package com.perficient.domain.model;
 
 public enum Category {
     APPETIZERS,
