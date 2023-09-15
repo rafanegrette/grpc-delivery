@@ -1,2 +1,3 @@
 rootProject.name = 'grpc-delivery'
 include 'products-app'
+include 'order-app'
