@@ -2,16 +2,26 @@ package com.perficient.orderapp.infrastructure.adapter.in.grpc;
 
 import com.perficient.order.models.OrderResponse;
 import com.perficient.order.models.ProductRequest;
+import com.perficient.orderapp.application.port.in.AddProductUseCase;
+import com.perficient.orderapp.domain.model.Customer;
 import io.grpc.internal.testing.StreamRecorder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class GenerateOrderTest {
+
+    @Mock
+    AddProductUseCase addProductUseCase;
 
     @InjectMocks
     GenerateOrder generateOrderService;
@@ -38,13 +48,14 @@ class GenerateOrderTest {
             productsObserver.onNext(product2);
         }
         productsObserver.onCompleted();
+
         // THEN
 
         var orderResponses = orderResponseObserver.getValues();
 
         assertEquals(1, orderResponses.size());
 
-        assertEquals(2, orderResponses.get(0).getProductsList().size());
+        verify(addProductUseCase, times(20)).addProduct(any(Customer.class), any());
 
     }
 }

@@ -1,4 +1,4 @@
-package com.perficient.orderapp.domain;
+package com.perficient.orderapp.domain.model;
 
 import lombok.Data;
 import lombok.NonNull;
