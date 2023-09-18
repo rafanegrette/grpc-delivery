@@ -1,7 +1,8 @@
 package com.perficient.infrastructure.adapter.in.grpc;
 
 import com.perficient.domain.model.Product;
-import com.perficient.infrastructure.repository.out.cassandra.CassandraPersistence;
+import com.perficient.infrastructure.adapter.out.persistence.CassandraPersistence;
+import com.perficient.infrastructure.adapter.out.persistence.entity.ProductEntity;
 import com.perficient.models.FetchProductsGrpc;
 import com.perficient.models.MenuRequest;
 import com.perficient.models.MenuResponse;
@@ -14,6 +15,8 @@ import java.util.List;
 public class FetchProducts  extends FetchProductsGrpc.FetchProductsImplBase {
 
     private final CassandraPersistence cassandraPersistence;
+
+
 
     public FetchProducts(CassandraPersistence cassandraPersistence) {
         this.cassandraPersistence = cassandraPersistence;
@@ -36,10 +39,11 @@ public class FetchProducts  extends FetchProductsGrpc.FetchProductsImplBase {
 
     @Override
     public void productsStream(MenuRequest request, StreamObserver<MenuResponse> responseObserver){
-        int menuId = request.getMenuId();
+        int restaurantId = request.getMenuId();
 
-        List<Product> allProducts = cassandraPersistence.findAllBy("");
+        List<Product> allProducts = cassandraPersistence.displayProductsByRestaurant(restaurantId);
 
+        //TODO the operation below doesn't belong to this class
         for (int i = 0; i <= allProducts.size()-1; i++) {
 
             MenuResponse menuResponse = MenuResponse.newBuilder()
