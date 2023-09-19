@@ -1,4 +1,8 @@
 package com.perficient.orderapp.domain.model;
 
-public class Product {
+import java.util.UUID;
+
+public record Product (UUID productId, int quantity){
+
+
 }

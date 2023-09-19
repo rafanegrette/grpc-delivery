@@ -25,10 +25,13 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'io.grpc:grpc-testing:1.57.2'
+	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'io.grpc:grpc-testing:1.57.2'
 }
 
 tasks.named('test') {
