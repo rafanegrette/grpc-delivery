@@ -3,13 +3,11 @@ package com.perficient.orderapp.domain.model;
 import lombok.Data;
 import lombok.NonNull;
 
-@Data
-public class Order {
+import java.util.List;
 
-    @NonNull
-    private String orderId;
+public record Order (@NonNull String orderId,
+                     @NonNull Customer customer,
+                     List<Product> products) {
 
-    @NonNull
-    private String name;
 
 }

@@ -19,7 +19,7 @@ public class ProductMapperTest {
                 .setProductId(idProduct)
                 .setQuantity(5)
                 .build();
-        var productExpected = new Product(UUID.fromString(idProduct) , 5);
+        var productExpected = new Product(UUID.fromString(idProduct) , "Donas",5);
         // WHEN
 
         var productGiven = ProductMapper.INSTANCE.map(productRequest);
