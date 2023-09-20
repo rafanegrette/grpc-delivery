@@ -20,3 +20,7 @@ astra.db:
   region: us-east1
   keyspace: spring_cassandra
   application.token: AstraCS:vTxGHrnAZJUTGwykXRsMOquo:27df3805661d914c228c313077e1218500a310343da7cd18907bfccf70f704ac
+
+grpc:
+  server:
+    port: 6565

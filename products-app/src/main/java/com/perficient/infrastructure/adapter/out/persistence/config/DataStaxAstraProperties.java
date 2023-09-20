@@ -1,4 +1,4 @@
-package com.perficient.infrastructure.repository.out.cassandra.config;
+package com.perficient.infrastructure.adapter.out.persistence.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

@@ -1,6 +1,6 @@
 package com.perficient.infrastructure;
 
-import com.perficient.infrastructure.repository.out.cassandra.config.DataStaxAstraProperties;
+import com.perficient.infrastructure.adapter.out.persistence.config.DataStaxAstraProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.cassandra.CqlSessionBuilderCustomizer;
