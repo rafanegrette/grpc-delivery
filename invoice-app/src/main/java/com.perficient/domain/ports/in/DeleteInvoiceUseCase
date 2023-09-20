@@ -1,5 +1,0 @@
-package com.perficient.domain.ports.in;
-
-public interface DeleteInvoiceUseCase {
-  boolean deleteTInvoice(Long id);
-}

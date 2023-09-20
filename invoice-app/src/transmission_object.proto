@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package transmission_object;
-
-message TransmissionObject {
-    float value = 1;
-    string message = 2;
-}
