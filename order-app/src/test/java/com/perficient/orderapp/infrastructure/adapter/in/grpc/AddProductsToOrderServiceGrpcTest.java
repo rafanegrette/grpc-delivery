@@ -16,7 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,7 +36,6 @@ class AddProductsToOrderServiceGrpcTest {
     final String PRODUCT_NAME_2 = "Hamburger Avenger";
 
     final UUID CUSTOMER_ID = UUID.fromString("6d303f86-3e90-491e-b98c-96b7d32b0e9d");
-    final Customer CUSTOMER = new Customer(CUSTOMER_ID,"guy1");
 
     @Mock
     AddProductUseCase addProductUseCase;
@@ -123,10 +122,10 @@ class AddProductsToOrderServiceGrpcTest {
                 BigDecimal.valueOf(5.5),
                 BigDecimal.ZERO);
 
-        var orderGiven = getOrder(List.of(product1, product2));
+        var orderGiven = getOrder(Set.of(product1, product2));
 
         // WHEN
-        when(retrieveOrderUseCase.retrieve(any(Customer.class))).thenReturn(orderGiven);
+        when(retrieveOrderUseCase.retrieveCurrentOrder(any(Customer.class))).thenReturn(orderGiven);
 
         StreamRecorder<OrderResponse> orderResponseObserver = StreamRecorder.create();
         var productsObserver = createOrderServiceServiceGrpc.addProductToOrder(orderResponseObserver);
@@ -145,16 +144,13 @@ class AddProductsToOrderServiceGrpcTest {
         assertEquals(2, orderResponses.get(0).getProductsList().size());
     }
 
-    private Order getOrder(List<ProductItem> productItems) {
+    private Order getOrder(Set<ProductItem> productItems) {
         return new Order(UUID.randomUUID(),
-                CUSTOMER,
+                CUSTOMER_ID,
                 productItems,
                 BigDecimal.TEN,
                 null,
                 OrderStatus.IN_PROGRESS);
     }
 
-    public static void main(String[] args) {
-        System.out.println(UUID.randomUUID());
-    }
 }

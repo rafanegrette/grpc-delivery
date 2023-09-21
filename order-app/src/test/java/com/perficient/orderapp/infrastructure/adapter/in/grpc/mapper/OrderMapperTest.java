@@ -10,9 +10,11 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class OrderMapperTest {
 
@@ -24,18 +26,19 @@ public class OrderMapperTest {
     @Test
     void orderToOrderResponse() {
         // GIVEN
-        String orderId = UUID.randomUUID().toString();
+        var customerId = "6d303f86-3e90-491e-b98c-96b7d32b0e9d";
+        var orderId = UUID.randomUUID().toString();
         var productList = getProductList();
         var productResponseList = getProductResponseList();
         Order order = new Order(UUID.fromString(orderId),
-                new Customer(UUID.fromString("6d303f86-3e90-491e-b98c-96b7d32b0e9d"), "guy1"),
+                UUID.fromString(customerId),
                 productList,
                 BigDecimal.TEN,
                 null,
                 OrderStatus.IN_PROGRESS);
         OrderResponse orderResponseExpected = OrderResponse.newBuilder()
                 .setOrderId(orderId)
-                .setCustomer("guy1")
+                .setCustomerId(customerId)
                 .addAllProducts(productResponseList)
                 .setOrderStatus("IN_PROGRESS")
                 .build();
@@ -44,10 +47,15 @@ public class OrderMapperTest {
         var orderResponseReturned = OrderMapper.INSTANCE.map(order);
         // THEN
 
-        assertEquals(orderResponseExpected, orderResponseReturned);
+        assertEquals(orderResponseExpected.getOrderId(), orderResponseReturned.getOrderId());
+        assertEquals(orderResponseExpected.getOrderStatus(), orderResponseReturned.getOrderStatus());
+        assertEquals(orderResponseExpected.getCustomerId(), orderResponseReturned.getCustomerId());
+        orderResponseExpected.getProductsList().forEach(productResponseExpected ->{
+            assertTrue(orderResponseReturned.getProductsList().contains(productResponseExpected));
+        });
     }
 
-    private List<ProductItem> getProductList() {
+    private Set<ProductItem> getProductList() {
         var product1 = new ProductItem(UUID.fromString(PRODUCT_ID_1),
                 PRODUCT_NAME_1,
                 "Vegetables",
@@ -60,7 +68,7 @@ public class OrderMapperTest {
                 2,
                 BigDecimal.valueOf(5.5),
                 BigDecimal.ZERO);
-        return List.of(product1, product2);
+        return Set.of(product1, product2);
     }
 
     private List<ProductResponse> getProductResponseList() {

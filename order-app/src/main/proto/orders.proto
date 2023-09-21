@@ -29,7 +29,7 @@ message OrderResponse {
   string order_id = 1;
   repeated ProductResponse products = 2;
   google.protobuf.Timestamp creation_date = 3;
-  string customer = 4;
+  string customer_id = 4;
   string order_status = 5;
 }
 

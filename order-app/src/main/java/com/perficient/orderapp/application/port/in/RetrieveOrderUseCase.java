@@ -5,6 +5,6 @@ import com.perficient.orderapp.domain.model.Order;
 
 public interface RetrieveOrderUseCase {
 
-    Order retrieve(Customer customer);
+    Order retrieveCurrentOrder(Customer customer);
 
 }

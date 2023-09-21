@@ -25,7 +25,7 @@ class OrderStreamResponse implements StreamObserver<ProductRequest> {
     public void onNext(ProductRequest productRequest) {
         var order = Order.builder()
                 .orderId(UUID.fromString(productRequest.getOrderId()))
-                .customer(new Customer(CUSTOMER_ID, "guy1"))
+                .customerId(CUSTOMER_ID)
                 .build();
 
         addProductUseCase.addProductToOrder(order,
@@ -40,7 +40,7 @@ class OrderStreamResponse implements StreamObserver<ProductRequest> {
 
     @Override
     public void onCompleted() {
-        var orderResponse = retrieveOrderUseCase.retrieve(new Customer(CUSTOMER_ID, "guy1"));
+        var orderResponse = retrieveOrderUseCase.retrieveCurrentOrder(new Customer(CUSTOMER_ID, "guy1"));
         responseObserver.onNext(OrderMapper.INSTANCE.map(orderResponse));
         responseObserver.onCompleted();
     }
