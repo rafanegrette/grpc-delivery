@@ -33,8 +33,14 @@ message OrderResponse {
   string order_status = 5;
 }
 
+service ProductsOrderService {
+  rpc addProductToOrder(stream ProductRequest) returns (OrderResponse) {}
+}
+
 service OrderService {
   rpc create(CustomerRequest) returns (OrderResponse) {}
-  rpc addProductToOrder(stream ProductRequest) returns (OrderResponse) {}
-  rpc pay(OrderRequest) returns (OrderResponse) {}
+}
+
+service PaymentService {
+  rpc payOrder(OrderRequest) returns (OrderResponse) {}
 }

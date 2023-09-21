@@ -59,18 +59,6 @@ class AddProductsToOrderServiceGrpcTest {
                 .setOrderId(ORDER_ID)
                 .build();
 
-        var product1 = new ProductItem(PRODUCT_ID_1_UUID,
-                PRODUCT_NAME_1,
-                "Vegetables",
-                1,
-                BigDecimal.TEN,
-                BigDecimal.ZERO);
-        var product2 = new ProductItem(PRODUCT_ID_2_UUID,
-                PRODUCT_NAME_2,
-                "Vegetables",
-                2,
-                BigDecimal.valueOf(5.5),
-                BigDecimal.ZERO);
 
         // WHEN
 
