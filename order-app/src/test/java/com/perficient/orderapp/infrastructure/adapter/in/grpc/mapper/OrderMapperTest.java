@@ -2,12 +2,13 @@ package com.perficient.orderapp.infrastructure.adapter.in.grpc.mapper;
 
 import com.perficient.order.models.OrderResponse;
 import com.perficient.order.models.ProductResponse;
-import com.perficient.order.models.ProductResponseOrBuilder;
 import com.perficient.orderapp.domain.model.Customer;
 import com.perficient.orderapp.domain.model.Order;
-import com.perficient.orderapp.domain.model.Product;
+import com.perficient.orderapp.domain.model.OrderStatus;
+import com.perficient.orderapp.domain.model.ProductItem;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,16 +24,20 @@ public class OrderMapperTest {
     @Test
     void orderToOrderResponse() {
         // GIVEN
-        String orderId = "jdfkjds";
+        String orderId = UUID.randomUUID().toString();
         var productList = getProductList();
         var productResponseList = getProductResponseList();
-        Order order = new Order("jdfkjds",
-                new Customer("guy1"),
-                productList);
+        Order order = new Order(UUID.fromString(orderId),
+                new Customer(UUID.fromString("6d303f86-3e90-491e-b98c-96b7d32b0e9d"), "guy1"),
+                productList,
+                BigDecimal.TEN,
+                null,
+                OrderStatus.IN_PROGRESS);
         OrderResponse orderResponseExpected = OrderResponse.newBuilder()
                 .setOrderId(orderId)
                 .setCustomer("guy1")
                 .addAllProducts(productResponseList)
+                .setOrderStatus("IN_PROGRESS")
                 .build();
 
         // WHEN
@@ -42,20 +47,30 @@ public class OrderMapperTest {
         assertEquals(orderResponseExpected, orderResponseReturned);
     }
 
-    private List<Product> getProductList() {
-        var product1 = new Product(UUID.fromString(PRODUCT_ID_1), PRODUCT_NAME_1, 1);
-        var product2 = new Product(UUID.fromString(PRODUCT_ID_2), PRODUCT_NAME_2,2);
+    private List<ProductItem> getProductList() {
+        var product1 = new ProductItem(UUID.fromString(PRODUCT_ID_1),
+                PRODUCT_NAME_1,
+                "Vegetables",
+                1,
+                BigDecimal.TEN,
+                BigDecimal.ZERO);
+        var product2 = new ProductItem(UUID.fromString(PRODUCT_ID_2),
+                PRODUCT_NAME_2,
+                "Vegetables",
+                2,
+                BigDecimal.valueOf(5.5),
+                BigDecimal.ZERO);
         return List.of(product1, product2);
     }
 
     private List<ProductResponse> getProductResponseList() {
         var productResponse1 = ProductResponse.newBuilder()
-                .setProductId(PRODUCT_ID_1)
+                .setId(PRODUCT_ID_1)
                 .setQuantity(1)
                 .setName(PRODUCT_NAME_1)
                 .build();
         var productResponse2 = ProductResponse.newBuilder()
-                .setProductId(PRODUCT_ID_2)
+                .setId(PRODUCT_ID_2)
                 .setQuantity(2)
                 .setName(PRODUCT_NAME_2)
                 .build();

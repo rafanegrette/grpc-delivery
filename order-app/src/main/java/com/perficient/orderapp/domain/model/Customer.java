@@ -1,4 +1,17 @@
 package com.perficient.orderapp.domain.model;
 
-public record Customer (String name) {
+import lombok.NonNull;
+
+import java.util.UUID;
+
+public record Customer (
+        @NonNull
+        UUID id,
+        @NonNull
+        String name,
+        String address) {
+
+    public Customer (UUID id, String name) {
+        this(id, name, "");
+    }
 }

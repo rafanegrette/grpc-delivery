@@ -6,14 +6,23 @@ option java_package = "com.perficient.order.models";
 option java_multiple_files = true;
 
 message ProductRequest {
-  string product_id = 1;
+  string id = 1;
   int32 quantity = 2;
+  string order_id = 4;
 }
 
 message ProductResponse {
-  string product_id = 1;
+  string id = 1;
   string name = 2;
   int32 quantity = 3;
+}
+
+message OrderRequest {
+  string id = 1;
+}
+
+message CustomerRequest {
+  string id = 1;
 }
 
 message OrderResponse {
@@ -21,8 +30,11 @@ message OrderResponse {
   repeated ProductResponse products = 2;
   google.protobuf.Timestamp creation_date = 3;
   string customer = 4;
+  string order_status = 5;
 }
 
-service GenerateOrders {
-  rpc create(stream ProductRequest) returns (OrderResponse) {}
+service OrderService {
+  rpc create(CustomerRequest) returns (OrderResponse) {}
+  rpc addProductToOrder(stream ProductRequest) returns (OrderResponse) {}
+  rpc pay(OrderRequest) returns (OrderResponse) {}
 }

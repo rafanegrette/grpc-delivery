@@ -1,13 +1,19 @@
 package com.perficient.orderapp.domain.model;
 
-import lombok.Data;
+import lombok.Builder;
 import lombok.NonNull;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
-public record Order (@NonNull String orderId,
+@Builder
+public record Order (@NonNull UUID orderId,
                      @NonNull Customer customer,
-                     List<Product> products) {
+                     List<ProductItem> productItems,
+                     BigDecimal totalPrice,
+                     PaymentDetails paymentDetails,
+                     OrderStatus orderStatus) {
 
 
 }

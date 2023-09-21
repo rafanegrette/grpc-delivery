@@ -13,7 +13,7 @@ public interface OrderMapper {
 
     OrderMapper INSTANCE = Mappers.getMapper(OrderMapper.class);
 
-    @Mapping(source = "products", target = "productsList")
+    @Mapping(source = "productItems", target = "productsList")
     @Mapping(source = "customer.name", target = "customer")
     OrderResponse map(Order order);
 }

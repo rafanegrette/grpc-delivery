@@ -2,32 +2,35 @@ package com.perficient.orderapp.infrastructure.adapter.in.grpc;
 
 import com.perficient.order.models.OrderResponse;
 import com.perficient.order.models.ProductRequest;
-import com.perficient.order.models.ProductResponse;
 import com.perficient.orderapp.application.port.in.AddProductUseCase;
-import com.perficient.orderapp.application.port.in.CreateOrderUseCase;
+import com.perficient.orderapp.application.port.in.RetrieveOrderUseCase;
 import com.perficient.orderapp.domain.model.Customer;
-import com.perficient.orderapp.domain.model.Product;
-import com.perficient.orderapp.infrastructure.adapter.in.grpc.mapper.ProductMapper;
+import com.perficient.orderapp.domain.model.Order;
 import com.perficient.orderapp.infrastructure.adapter.in.grpc.mapper.OrderMapper;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 
-import java.util.*;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 class OrderStreamResponse implements StreamObserver<ProductRequest> {
 
+    private final UUID CUSTOMER_ID = UUID.fromString("6d303f86-3e90-491e-b98c-96b7d32b0e9d");
     private final StreamObserver<OrderResponse> responseObserver;
 
     private final AddProductUseCase addProductUseCase;
-    private final CreateOrderUseCase createOrderUseCase;
+    private final RetrieveOrderUseCase retrieveOrderUseCase;
 
     @Override
     public void onNext(ProductRequest productRequest) {
+        var order = Order.builder()
+                .orderId(UUID.fromString(productRequest.getOrderId()))
+                .customer(new Customer(CUSTOMER_ID, "guy1"))
+                .build();
 
-        addProductUseCase.addProduct(new Customer("guy1"), ProductMapper
-                .INSTANCE
-                .map(productRequest));
+        addProductUseCase.addProductToOrder(order,
+                UUID.fromString(productRequest.getId()),
+                productRequest.getQuantity());
     }
 
     @Override
@@ -37,7 +40,7 @@ class OrderStreamResponse implements StreamObserver<ProductRequest> {
 
     @Override
     public void onCompleted() {
-        var orderResponse = createOrderUseCase.create(new Customer("guy1"));
+        var orderResponse = retrieveOrderUseCase.retrieve(new Customer(CUSTOMER_ID, "guy1"));
         responseObserver.onNext(OrderMapper.INSTANCE.map(orderResponse));
         responseObserver.onCompleted();
     }
