@@ -16,6 +16,5 @@ message MenuResponse {
 }
 
 service FetchProducts {
-  rpc products(MenuRequest) returns (MenuResponse) {}
   rpc productsStream(MenuRequest) returns (stream MenuResponse) {}
 }
