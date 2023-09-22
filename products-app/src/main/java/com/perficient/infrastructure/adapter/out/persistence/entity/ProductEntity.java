@@ -16,7 +16,6 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 @Table("product")
 public class ProductEntity {
         @PrimaryKey

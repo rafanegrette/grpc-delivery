@@ -14,6 +14,7 @@ public interface ProductMapper {
     Product entityToDomain (ProductEntity productEntity);
 
     @Mapping(source = "restaurantId", target = "menuId")
+    @Mapping(source = "id", target = "productId")
     MenuResponse domainToResponse(Product product);
 
 }
