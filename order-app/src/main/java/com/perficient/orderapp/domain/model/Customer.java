@@ -1,6 +1,7 @@
 package com.perficient.orderapp.domain.model;
 
 import lombok.NonNull;
+import lombok.With;
 
 import java.util.UUID;
 

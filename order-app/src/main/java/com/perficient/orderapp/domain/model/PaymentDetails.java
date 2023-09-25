@@ -1,12 +1,19 @@
 package com.perficient.orderapp.domain.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public record PaymentDetails (
-        UUID id,
-        LocalDateTime paymentDate,
-        BigDecimal amount) {
+@Data
+@Builder
+@AllArgsConstructor
+public class PaymentDetails {
+        private UUID id;
+        private LocalDateTime paymentDate;
+        private BigDecimal amount;
 
 }
