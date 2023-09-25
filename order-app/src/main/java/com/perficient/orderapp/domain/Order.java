@@ -1,4 +1,4 @@
-package com.perficient.orderapp.domain.model;
+package com.perficient.orderapp.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,8 +1,8 @@
-package com.perficient.orderapp.domain.service;
+package com.perficient.orderapp.application;
 
-import com.perficient.orderapp.application.port.out.RetrieveOrder;
-import com.perficient.orderapp.domain.model.Customer;
-import com.perficient.orderapp.domain.model.Order;
+import com.perficient.orderapp.domain.port.RetrieveOrder;
+import com.perficient.orderapp.domain.Customer;
+import com.perficient.orderapp.domain.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,13 +15,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-class RetrieveOrderServiceTest {
+class RetrieveOrderUseCaseTest {
 
     @Mock
     RetrieveOrder retrieveOrder;
 
     @InjectMocks
-    RetrieveOrderService retrieveOrderService;
+    RetrieveOrderUseCase retrieveOrderUseCase;
 
     @Test
     void retrieveCurrentOrder() {
@@ -33,7 +33,7 @@ class RetrieveOrderServiceTest {
         var currentCustomer = new Customer(UUID.randomUUID(), "guy1");
         given(retrieveOrder.retrieveLastOrder(currentCustomer)).willReturn(order);
         // WHEN
-        var orderReturned = retrieveOrderService.retrieveCurrentOrder(currentCustomer);
+        var orderReturned = retrieveOrderUseCase.retrieveCurrentOrder(currentCustomer);
 
         // THEN
         assertNotNull(orderReturned);

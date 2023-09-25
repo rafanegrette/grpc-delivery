@@ -1,8 +1,8 @@
 package com.perficient.orderapp.infrastructure.adapter.out.persistence;
 
-import com.perficient.orderapp.domain.model.Order;
-import com.perficient.orderapp.domain.model.OrderStatus;
-import com.perficient.orderapp.domain.model.ProductItem;
+import com.perficient.orderapp.domain.Order;
+import com.perficient.orderapp.domain.OrderStatus;
+import com.perficient.orderapp.domain.ProductItem;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.repository.CassandraOrderRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

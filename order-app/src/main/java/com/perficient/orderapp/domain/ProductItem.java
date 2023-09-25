@@ -1,4 +1,4 @@
-package com.perficient.orderapp.domain.model;
+package com.perficient.orderapp.domain;
 
 import com.perficient.orderapp.domain.excepton.InvalidProductItemException;
 import lombok.Getter;

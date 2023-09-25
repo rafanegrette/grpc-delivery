@@ -1,9 +1,9 @@
-package com.perficient.orderapp.domain.service;
+package com.perficient.orderapp.application;
 
-import com.perficient.orderapp.application.port.out.PaymentPort;
-import com.perficient.orderapp.domain.model.Order;
-import com.perficient.orderapp.domain.model.OrderStatus;
-import com.perficient.orderapp.domain.model.PaymentDetails;
+import com.perficient.orderapp.domain.port.PaymentPort;
+import com.perficient.orderapp.domain.Order;
+import com.perficient.orderapp.domain.OrderStatus;
+import com.perficient.orderapp.domain.PaymentDetails;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,13 +18,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-class PayOrderServiceTest {
+class PayOrderUseCaseTest {
 
     @Mock
     PaymentPort paymentPort;
 
     @InjectMocks
-    PayOrderService payOrderService;
+    PayOrderUseCase payOrderUseCase;
 
     @Test
     void payOrder_should_success() {
@@ -40,7 +40,7 @@ class PayOrderServiceTest {
         given(paymentPort.executePayment(order)).willReturn(paymentDetails);
 
         // WHEN
-        payOrderService.payOrder(order);
+        payOrderUseCase.payOrder(order);
 
         // THEN
         assertEquals(OrderStatus.PAID, order.getOrderStatus());

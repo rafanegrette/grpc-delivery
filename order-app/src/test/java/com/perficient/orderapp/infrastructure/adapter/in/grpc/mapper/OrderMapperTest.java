@@ -1,11 +1,10 @@
 package com.perficient.orderapp.infrastructure.adapter.in.grpc.mapper;
 
-import com.perficient.order.models.OrderResponse;
-import com.perficient.order.models.ProductResponse;
-import com.perficient.orderapp.domain.model.Customer;
-import com.perficient.orderapp.domain.model.Order;
-import com.perficient.orderapp.domain.model.OrderStatus;
-import com.perficient.orderapp.domain.model.ProductItem;
+import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.OrderResponse;
+import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.ProductResponse;
+import com.perficient.orderapp.domain.Order;
+import com.perficient.orderapp.domain.OrderStatus;
+import com.perficient.orderapp.domain.ProductItem;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -50,9 +49,9 @@ public class OrderMapperTest {
         assertEquals(orderResponseExpected.getOrderId(), orderResponseReturned.getOrderId());
         assertEquals(orderResponseExpected.getOrderStatus(), orderResponseReturned.getOrderStatus());
         assertEquals(orderResponseExpected.getCustomerId(), orderResponseReturned.getCustomerId());
-        orderResponseExpected.getProductsList().forEach(productResponseExpected ->{
-            assertTrue(orderResponseReturned.getProductsList().contains(productResponseExpected));
-        });
+        orderResponseExpected.getProductsList().forEach(productResponseExpected ->
+            assertTrue(orderResponseReturned.getProductsList().contains(productResponseExpected))
+        );
     }
 
     private Set<ProductItem> getProductList() {

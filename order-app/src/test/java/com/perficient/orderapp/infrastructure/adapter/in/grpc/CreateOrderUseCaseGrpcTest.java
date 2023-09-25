@@ -1,9 +1,9 @@
 package com.perficient.orderapp.infrastructure.adapter.in.grpc;
 
-import com.perficient.order.models.CustomerRequest;
-import com.perficient.order.models.OrderResponse;
-import com.perficient.orderapp.application.port.in.CreateOrderUseCase;
-import com.perficient.orderapp.domain.model.Order;
+import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.CustomerRequest;
+import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.OrderResponse;
+import com.perficient.orderapp.application.CreateOrderUseCase;
+import com.perficient.orderapp.domain.Order;
 import io.grpc.internal.testing.StreamRecorder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-class CreateOrderServiceGrpcTest {
+class CreateOrderUseCaseGrpcTest {
 
     @Mock
     CreateOrderUseCase createOrderUseCase;

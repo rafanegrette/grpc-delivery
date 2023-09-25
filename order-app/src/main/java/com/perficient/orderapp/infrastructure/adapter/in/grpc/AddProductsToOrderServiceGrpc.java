@@ -1,10 +1,10 @@
 package com.perficient.orderapp.infrastructure.adapter.in.grpc;
 
-import com.perficient.order.models.ProductsOrderServiceGrpc.ProductsOrderServiceImplBase;
-import com.perficient.order.models.ProductRequest;
-import com.perficient.order.models.OrderResponse;
-import com.perficient.orderapp.application.port.in.AddProductUseCase;
-import com.perficient.orderapp.application.port.in.RetrieveOrderUseCase;
+import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.ProductsOrderServiceGrpc.ProductsOrderServiceImplBase;
+import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.ProductRequest;
+import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.OrderResponse;
+import com.perficient.orderapp.application.AddProductUseCase;
+import com.perficient.orderapp.application.RetrieveOrderUseCase;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import org.lognet.springboot.grpc.GRpcService;

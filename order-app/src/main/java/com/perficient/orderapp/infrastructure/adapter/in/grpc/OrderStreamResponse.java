@@ -1,11 +1,11 @@
 package com.perficient.orderapp.infrastructure.adapter.in.grpc;
 
-import com.perficient.order.models.OrderResponse;
-import com.perficient.order.models.ProductRequest;
-import com.perficient.orderapp.application.port.in.AddProductUseCase;
-import com.perficient.orderapp.application.port.in.RetrieveOrderUseCase;
-import com.perficient.orderapp.domain.model.Customer;
-import com.perficient.orderapp.domain.model.Order;
+import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.OrderResponse;
+import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.ProductRequest;
+import com.perficient.orderapp.application.AddProductUseCase;
+import com.perficient.orderapp.application.RetrieveOrderUseCase;
+import com.perficient.orderapp.domain.Customer;
+import com.perficient.orderapp.domain.Order;
 import com.perficient.orderapp.infrastructure.adapter.in.grpc.mapper.OrderMapper;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;

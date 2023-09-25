@@ -1,9 +1,9 @@
 package com.perficient.orderapp.infrastructure.adapter.in.grpc;
 
-import com.perficient.order.models.CustomerRequest;
-import com.perficient.order.models.OrderResponse;
-import com.perficient.order.models.OrderServiceGrpc.OrderServiceImplBase;
-import com.perficient.orderapp.application.port.in.CreateOrderUseCase;
+import com.perficient.orderapp.application.CreateOrderUseCase;
+import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.CustomerRequest;
+import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.OrderResponse;
+import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.OrderServiceGrpc.OrderServiceImplBase;
 import com.perficient.orderapp.infrastructure.adapter.in.grpc.mapper.OrderMapper;
 import io.grpc.stub.StreamObserver;
 import org.lognet.springboot.grpc.GRpcService;

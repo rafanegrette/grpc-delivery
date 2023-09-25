@@ -1,12 +1,11 @@
-package com.perficient.orderapp.domain.service;
+package com.perficient.orderapp.application;
 
-import com.perficient.orderapp.application.port.out.RetrieveOrder;
-import com.perficient.orderapp.application.port.out.RetrieveProductItem;
-import com.perficient.orderapp.application.port.out.SaveOrder;
-import com.perficient.orderapp.domain.model.Customer;
-import com.perficient.orderapp.domain.model.Order;
-import com.perficient.orderapp.domain.model.OrderStatus;
-import com.perficient.orderapp.domain.model.ProductItem;
+import com.perficient.orderapp.domain.port.RetrieveOrder;
+import com.perficient.orderapp.domain.port.RetrieveProductItem;
+import com.perficient.orderapp.domain.port.SaveOrder;
+import com.perficient.orderapp.domain.Order;
+import com.perficient.orderapp.domain.OrderStatus;
+import com.perficient.orderapp.domain.ProductItem;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,7 +22,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class AddProductServiceTest {
+class AddProductUseCaseTest {
 
     @Mock
     RetrieveProductItem retrieveProductItem;
@@ -32,7 +31,8 @@ class AddProductServiceTest {
     @Mock
     SaveOrder saveOrder;
 
-    @InjectMocks AddProductService addProductService;
+    @InjectMocks
+    AddProductUseCase addProductUseCase;
 
     @Test()
     void add_product_to_order_should_success() {
@@ -63,9 +63,9 @@ class AddProductServiceTest {
         given(retrieveProductItem.retrieve(product_id_2)).willReturn(product2);
 
         // WHEN
-        addProductService.addProductToOrder(order, product_id_1, 2);
-        addProductService.addProductToOrder(order, product_id_2, 3);
-        addProductService.addProductToOrder(order, product_id_1, 2);
+        addProductUseCase.addProductToOrder(order, product_id_1, 2);
+        addProductUseCase.addProductToOrder(order, product_id_2, 3);
+        addProductUseCase.addProductToOrder(order, product_id_1, 2);
 
         // THEN
         assertEquals(2, order.getProductItems().size());
@@ -84,7 +84,7 @@ class AddProductServiceTest {
                 .build();
         given(retrieveOrder.retrieve(order_id)).willReturn(order);
         // WHEN
-        addProductService.addProductToOrder(order, product_id_1, 1);
+        addProductUseCase.addProductToOrder(order, product_id_1, 1);
 
         // THEN
         verify(retrieveOrder, times(1)).retrieve(order_id);
@@ -104,7 +104,7 @@ class AddProductServiceTest {
         given(retrieveOrder.retrieve(order_id)).willReturn(order);
         // WHEN
 
-        addProductService.addProductToOrder(order, product_id_1, 1);
+        addProductUseCase.addProductToOrder(order, product_id_1, 1);
 
         // THEN
         verify(saveOrder, times(1)).save(order);

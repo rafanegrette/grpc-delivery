@@ -1,6 +1,6 @@
-package com.perficient.orderapp.domain.service;
+package com.perficient.orderapp.application;
 
-import com.perficient.orderapp.application.port.out.SaveOrder;
+import com.perficient.orderapp.domain.port.SaveOrder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,20 +12,20 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class CreateOrderServiceTest {
+class CreateOrderUseCaseTest {
 
     @Mock
     SaveOrder saveOrder;
 
     @InjectMocks
-    CreateOrderService createOrderService;
+    CreateOrderUseCase createOrderUseCase;
 
     @Test
     void create_should_success() {
         // GIVEN
         var customerId = UUID.randomUUID();
         // WHEN
-        var order = createOrderService.create(customerId);
+        var order = createOrderUseCase.create(customerId);
         // THEN
         assertNotNull(order);
         assertEquals(0, order.getProductItems().size());

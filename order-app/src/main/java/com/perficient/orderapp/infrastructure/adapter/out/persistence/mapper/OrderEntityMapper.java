@@ -1,7 +1,7 @@
 package com.perficient.orderapp.infrastructure.adapter.out.persistence.mapper;
 
-import com.perficient.orderapp.domain.model.Order;
-import com.perficient.orderapp.domain.model.ProductItem;
+import com.perficient.orderapp.domain.Order;
+import com.perficient.orderapp.domain.ProductItem;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.entity.OrderEntity;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.entity.ProductItemEntity;
 import org.mapstruct.Mapper;
