@@ -4,6 +4,6 @@ import com.perficient.orderapp.domain.Cart;
 
 public interface SaveCustomerCart {
 
-    void save(Cart cart);
+    void saveCart(Cart cart);
 
 }

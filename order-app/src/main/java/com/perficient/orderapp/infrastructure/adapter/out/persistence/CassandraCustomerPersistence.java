@@ -4,6 +4,10 @@ import com.perficient.orderapp.domain.Cart;
 import com.perficient.orderapp.domain.Customer;
 import com.perficient.orderapp.domain.port.RetrieveCustomer;
 import com.perficient.orderapp.domain.port.SaveCustomerCart;
+import com.perficient.orderapp.infrastructure.adapter.out.persistence.mapper.CartEntityMapper;
+import com.perficient.orderapp.infrastructure.adapter.out.persistence.mapper.CustomerEntityMapper;
+import com.perficient.orderapp.infrastructure.adapter.out.persistence.repository.CassandraCartRepository;
+import com.perficient.orderapp.infrastructure.adapter.out.persistence.repository.CassandraCustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,13 +16,21 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 public class CassandraCustomerPersistence implements RetrieveCustomer, SaveCustomerCart {
+
+    private final CassandraCustomerRepository cassandraCustomerRepository;
+    private final CassandraCartRepository cassandraCartRepository;
+
     @Override
     public Customer retrieve(UUID customerId) {
-        return null;
+        var customerEntity = cassandraCustomerRepository.findById(customerId).orElseThrow();
+        return CustomerEntityMapper.INSTANCE.map(customerEntity);
     }
 
-    @Override
-    public void save(Cart cart) {
+    // TODO saveCart should be in his own class
 
+    @Override
+    public void saveCart(Cart cart) {
+        var cartEntity = CartEntityMapper.INSTANCE.map(cart);
+        cassandraCartRepository.save(cartEntity);
     }
 }

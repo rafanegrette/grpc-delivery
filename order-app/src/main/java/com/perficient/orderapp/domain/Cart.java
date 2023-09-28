@@ -1,12 +1,14 @@
 package com.perficient.orderapp.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@Data
 @AllArgsConstructor
 public class Cart {
     private UUID id;

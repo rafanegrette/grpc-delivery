@@ -23,7 +23,7 @@ public class AddProductUseCase {
         var productItem = retrieveProductItem.retrieve(productItemId);
         Cart cart = retrieveCart(customerId);
         cart.addProduct(productItem);
-        saveCustomerCart.save(cart);
+        saveCustomerCart.saveCart(cart);
     }
 
     public Cart retrieveCart(UUID customerId) {

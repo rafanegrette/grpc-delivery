@@ -49,7 +49,7 @@ class AddProductUseCaseTest {
 
         // THEN
         assertEquals(2, customer.getCart().getProducts().size());
-        verify(saveCustomerCart, times(3)).save(customer.getCart());
+        verify(saveCustomerCart, times(3)).saveCart(customer.getCart());
     }
 
     @Test()
@@ -66,7 +66,7 @@ class AddProductUseCaseTest {
         addProductUseCase.addProductToCart(customer.getId(), product_id_1, 1);
 
         // THEN
-        verify(saveCustomerCart, times(1)).save(customer.getCart());
+        verify(saveCustomerCart, times(1)).saveCart(customer.getCart());
     }
 
 }
