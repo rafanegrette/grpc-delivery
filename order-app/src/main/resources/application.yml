@@ -1,0 +1,13 @@
+grpc:
+  enableReflection: true
+  port: 6566
+spring:
+  cassandra:
+    schema-action: create-if-not-exists
+    keyspace-name: order_keyspace
+    request:
+      timeout: 10s
+    connection:
+      connect-timeout: 10s
+      init-query-timeout: 10s
+    local-datacenter: datacenter1

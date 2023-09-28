@@ -2,27 +2,45 @@ syntax = "proto3";
 
 import "google/protobuf/timestamp.proto";
 
-option java_package = "com.perficient.order.models";
+option java_package = "com.perficient.orderapp.infrastructure.adapter.in.grpc.model";
 option java_multiple_files = true;
 
-message ProductRequest {
-  int32 product_id = 1;
-  int32 quantity = 2;
-}
-
-message ProductResponse {
-  int32 product_id = 1;
-  string name = 2;
+message AddProductRequest {
+  string id = 1;
+  string customer_id = 2;
   int32 quantity = 3;
 }
 
-message OrderResponse {
-  int32 order_id = 1;
+message CartResponse {
+  string cart_id  =1;
   repeated ProductResponse products = 2;
-  google.protobuf.Timestamp creation_date = 3;
-  string customer = 4;
+  double total_price = 3;
 }
 
-service GenerateOrders {
-  rpc create(stream ProductRequest) returns (OrderResponse) {}
+message PaymentRequest {
+  string amount = 1;
+  string payment_method = 2;
+}
+
+message ProductResponse {
+  string id = 1;
+  string name = 2;
+  int32 quantity = 3;
+  double price = 4;
+}
+
+message OrderResponse {
+  string order_id = 1;
+  repeated ProductResponse products = 2;
+  google.protobuf.Timestamp creation_date = 3;
+  string customer_id = 4;
+  string order_status = 5;
+}
+
+service cartService {
+  rpc addProduct(stream AddProductRequest) returns (CartResponse) {}
+}
+
+service PaymentService {
+  rpc payOrder(PaymentRequest) returns (OrderResponse) {}
 }
