@@ -1,22 +1,17 @@
 package com.perficient.orderapp.application;
 
-import com.perficient.orderapp.domain.port.RetrieveOrder;
-import com.perficient.orderapp.domain.port.RetrieveProductItem;
-import com.perficient.orderapp.domain.port.SaveOrder;
-import com.perficient.orderapp.domain.Order;
-import com.perficient.orderapp.domain.OrderStatus;
-import com.perficient.orderapp.domain.ProductItem;
+import com.perficient.orderapp.domain.mother.CustomerMother;
+import com.perficient.orderapp.domain.mother.ProductItemMother;
+import com.perficient.orderapp.domain.port.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -26,87 +21,52 @@ class AddProductUseCaseTest {
 
     @Mock
     RetrieveProductItem retrieveProductItem;
-    @Mock
-    RetrieveOrder retrieveOrder;
-    @Mock
-    SaveOrder saveOrder;
 
+    @Mock
+    RetrieveCustomer retrieveCustomer;
+    @Mock
+    SaveCustomerCart saveCustomerCart;
     @InjectMocks
     AddProductUseCase addProductUseCase;
 
     @Test()
-    void add_product_to_order_should_success() {
+    void add_product_to_cart_should_success() {
         // GIVEN
-        var product_id_1 = UUID.randomUUID();
-        var product_id_2 = UUID.randomUUID();
-        var product1 = new ProductItem(product_id_1,
-                "Salmon",
-                "Fish",
-                1,
-                BigDecimal.TEN,
-                BigDecimal.ZERO);
-        var product2 = new ProductItem(product_id_2,
-                "Rice",
-                "Rice",
-                1,
-                BigDecimal.valueOf(4.3),
-                BigDecimal.ZERO);
-        var orderId = UUID.randomUUID();
-        var order = Order.builder()
-                .orderId(orderId)
-                .customerId(UUID.randomUUID())
-                .productItems(new HashSet<>())
-                .orderStatus(OrderStatus.IN_PROGRESS)
-                .build();
-        given(retrieveOrder.retrieve(orderId)).willReturn(order);
+        var product_id_1 = ProductItemMother.product_id_1;
+        var product_id_2 = ProductItemMother.product_id_2;
+        var product1 = ProductItemMother.product1.build();
+        var product2 = ProductItemMother.product2.build();
+        var customer = CustomerMother.customer.build();
+
+        given(retrieveCustomer.retrieve(customer.getId())).willReturn(customer);
         given(retrieveProductItem.retrieve(product_id_1)).willReturn(product1);
         given(retrieveProductItem.retrieve(product_id_2)).willReturn(product2);
 
         // WHEN
-        addProductUseCase.addProductToOrder(order, product_id_1, 2);
-        addProductUseCase.addProductToOrder(order, product_id_2, 3);
-        addProductUseCase.addProductToOrder(order, product_id_1, 2);
+        addProductUseCase.addProductToCart(customer.getId(), product_id_1, 2);
+        addProductUseCase.addProductToCart(customer.getId(), product_id_2, 3);
+        addProductUseCase.addProductToCart(customer.getId(), product_id_1, 2);
 
         // THEN
-        assertEquals(2, order.getProductItems().size());
+        assertEquals(2, customer.getCart().getProducts().size());
+        verify(saveCustomerCart, times(3)).save(customer.getCart());
     }
 
     @Test()
-    void add_product_to_order_should_verify_order() {
+    void add_product_to_order_should_save_cart() {
         // GIVEN
         var product_id_1 = UUID.randomUUID();
-        var order_id = UUID.randomUUID();
-        var order = Order.builder()
-                .orderId(order_id)
-                .customerId(UUID.randomUUID())
-                .productItems(new HashSet<>())
-                .orderStatus(OrderStatus.IN_PROGRESS)
-                .build();
-        given(retrieveOrder.retrieve(order_id)).willReturn(order);
+        var product1 = ProductItemMother.product1.build();
+        var customer = CustomerMother.customer.build();
+
+        given(retrieveProductItem.retrieve(product_id_1)).willReturn(product1);
+        given(retrieveCustomer.retrieve(customer.getId())).willReturn(customer);
+
         // WHEN
-        addProductUseCase.addProductToOrder(order, product_id_1, 1);
+        addProductUseCase.addProductToCart(customer.getId(), product_id_1, 1);
 
         // THEN
-        verify(retrieveOrder, times(1)).retrieve(order_id);
+        verify(saveCustomerCart, times(1)).save(customer.getCart());
     }
 
-    @Test()
-    void add_product_to_order_should_save_order() {
-        // GIVEN
-        var product_id_1 = UUID.randomUUID();
-        var order_id = UUID.randomUUID();
-        var order = Order.builder()
-                .orderId(order_id)
-                .customerId(UUID.randomUUID())
-                .productItems(new HashSet<>())
-                .orderStatus(OrderStatus.IN_PROGRESS)
-                .build();
-        given(retrieveOrder.retrieve(order_id)).willReturn(order);
-        // WHEN
-
-        addProductUseCase.addProductToOrder(order, product_id_1, 1);
-
-        // THEN
-        verify(saveOrder, times(1)).save(order);
-    }
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NonNull;
 
 import java.math.BigDecimal;
-import java.util.Set;
+import java.util.Map;
 import java.util.UUID;
 
 @Data
@@ -17,12 +17,16 @@ public class Order {
     private UUID orderId;
     @NonNull
     private UUID customerId;
-    private Set<ProductItem> productItems;
+    private Map<ProductItem, Integer> productItems;
     private BigDecimal totalPrice;
     private PaymentDetails paymentDetails;
     private OrderStatus orderStatus;
 
-    public void addProductItem(ProductItem productItem) {
-        productItems.add(productItem);
+    public Order(Customer customer, Cart cart) {
+        orderId = UUID.randomUUID();
+        customerId = customer.getId();
+        productItems = cart.getProducts();
+        totalPrice = cart.getTotalPrice();
+        orderStatus = OrderStatus.IN_PROGRESS;
     }
 }

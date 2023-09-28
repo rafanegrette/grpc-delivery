@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -54,32 +54,32 @@ public class OrderMapperTest {
         );
     }
 
-    private Set<ProductItem> getProductList() {
+    private Map<ProductItem, Integer> getProductList() {
         var product1 = new ProductItem(UUID.fromString(PRODUCT_ID_1),
                 PRODUCT_NAME_1,
                 "Vegetables",
-                1,
                 BigDecimal.TEN,
                 BigDecimal.ZERO);
         var product2 = new ProductItem(UUID.fromString(PRODUCT_ID_2),
                 PRODUCT_NAME_2,
                 "Vegetables",
-                2,
                 BigDecimal.valueOf(5.5),
                 BigDecimal.ZERO);
-        return Set.of(product1, product2);
+        return Map.of(product1, 2, product2, 1);
     }
 
     private List<ProductResponse> getProductResponseList() {
         var productResponse1 = ProductResponse.newBuilder()
                 .setId(PRODUCT_ID_1)
-                .setQuantity(1)
+                .setQuantity(2)
                 .setName(PRODUCT_NAME_1)
+                .setPrice(10.0)
                 .build();
         var productResponse2 = ProductResponse.newBuilder()
                 .setId(PRODUCT_ID_2)
-                .setQuantity(2)
+                .setQuantity(1)
                 .setName(PRODUCT_NAME_2)
+                .setPrice(5.5)
                 .build();
         return List.of(productResponse1, productResponse2);
     }

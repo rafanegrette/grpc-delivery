@@ -5,7 +5,7 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 import java.math.BigDecimal;
-import java.util.Set;
+import java.util.Map;
 import java.util.UUID;
 
 @Table("Order")
@@ -15,7 +15,7 @@ public record OrderEntity (
     UUID orderId,
     @NonNull
     UUID customerId,
-    Set<ProductItemEntity> productItemEntities,
+    Map<ProductItemEntity, Integer> productItemEntities,
     PaymentDetailsEntity paymentDetailsEntity,
     BigDecimal totalPrice,
     String orderStatus) {

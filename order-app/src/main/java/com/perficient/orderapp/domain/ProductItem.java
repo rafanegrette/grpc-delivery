@@ -11,41 +11,34 @@ import java.util.UUID;
 @Getter
 public class ProductItem {
 
-    public static final String ERROR_QUANTITY_LESS_THAN_0 = "The quantity must be greater than 0";
+    public static final String ERROR_PRICE_LESS_THAN_0 = "The price must be greater than or equal to 0";
     @NonNull
     private UUID id;
 
     private String name;
     private String category;
 
-    private int quantity;
-
     private BigDecimal price;
     private BigDecimal discount;
 
-    public ProductItem(@NonNull UUID id, String name, String category, int quantity, BigDecimal price, BigDecimal discount) {
-
-        if (quantity < 1) {
-            throw new InvalidProductItemException(ERROR_QUANTITY_LESS_THAN_0);
-        }
+    public ProductItem(@NonNull UUID id, String name, String category, BigDecimal price, BigDecimal discount) {
 
         if (price.compareTo(BigDecimal.ZERO) == -1) {
-            throw new InvalidProductItemException("The price must be greater than or equal to 0");
+            throw new InvalidProductItemException(ERROR_PRICE_LESS_THAN_0);
         }
 
         this.id = id;
         this.name = name;
         this.category = category;
-        this.quantity = quantity;
         this.price = price;
         this.discount = discount;
     }
 
-    public void setQuantity(int quantity) {
-        if (quantity < 1) {
-            throw new InvalidProductItemException(ERROR_QUANTITY_LESS_THAN_0);
+    public void setPrice(BigDecimal price) {
+        if (price.compareTo(BigDecimal.ZERO) == -1) {
+            throw new InvalidProductItemException(ERROR_PRICE_LESS_THAN_0);
         }
-        this.quantity = quantity;
+        this.price = price;
     }
 
     @Override
@@ -53,7 +46,7 @@ public class ProductItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProductItem that = (ProductItem) o;
-        return id == that.getId();
+        return id.equals(that.getId()) && name.equals(that.getName());
     }
 
     @Override

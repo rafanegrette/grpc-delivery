@@ -1,34 +1,33 @@
 package com.perficient.orderapp.application;
 
-import com.perficient.orderapp.domain.port.RetrieveOrder;
+import com.perficient.orderapp.domain.Cart;
+import com.perficient.orderapp.domain.port.RetrieveCustomer;
 import com.perficient.orderapp.domain.port.RetrieveProductItem;
-import com.perficient.orderapp.domain.port.SaveOrder;
-import com.perficient.orderapp.domain.excepton.InvalidOrderStatus;
-import com.perficient.orderapp.domain.Order;
-import com.perficient.orderapp.domain.OrderStatus;
+import com.perficient.orderapp.domain.port.SaveCustomerCart;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class AddProductUseCase {
 
 
-    RetrieveProductItem retrieveProductItem;
-    RetrieveOrder retrieveOrder;
-    SaveOrder saveOrder;
+    private final RetrieveProductItem retrieveProductItem;
+    private final RetrieveCustomer retrieveCustomer;
+    private final SaveCustomerCart saveCustomerCart;
 
-    public void addProductToOrder(Order order, UUID productItemId, int quantity) {
-        verifyOrder(order);
+    public void addProductToCart(UUID customerId, UUID productItemId, int quantity) {
+        //verifyOrder(order);
         var productItem = retrieveProductItem.retrieve(productItemId);
-        order.addProductItem(productItem);
-        saveOrder.save(order);
+        Cart cart = retrieveCart(customerId);
+        cart.addProduct(productItem);
+        saveCustomerCart.save(cart);
     }
 
-    private void verifyOrder(Order order) {
-        var orderRetrieved = retrieveOrder.retrieve(order.getOrderId());
-        if (!OrderStatus.IN_PROGRESS.equals(orderRetrieved.getOrderStatus())) {
-            throw new InvalidOrderStatus("Can't add more products the order is in status: " + order.getOrderStatus());
-        }
+    public Cart retrieveCart(UUID customerId) {
+        return retrieveCustomer.retrieve(customerId).getCart();
     }
+
 }

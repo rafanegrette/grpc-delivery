@@ -1,9 +1,11 @@
 package com.perficient.orderapp.application;
 
+import com.perficient.orderapp.domain.mother.CustomerMother;
 import com.perficient.orderapp.domain.port.PaymentPort;
 import com.perficient.orderapp.domain.Order;
 import com.perficient.orderapp.domain.OrderStatus;
 import com.perficient.orderapp.domain.PaymentDetails;
+import com.perficient.orderapp.domain.port.RetrieveCustomer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -23,27 +26,26 @@ class PayOrderUseCaseTest {
     @Mock
     PaymentPort paymentPort;
 
+    @Mock
+    RetrieveCustomer retrieveCustomer;
     @InjectMocks
     PayOrderUseCase payOrderUseCase;
 
     @Test
     void payOrder_should_success() {
         // GIVEN
-        var order = Order.builder()
-                .orderId(UUID.randomUUID())
-                .customerId(UUID.randomUUID())
-                .orderStatus(OrderStatus.IN_PROGRESS)
-                .build();
+        var customer = CustomerMother.customer.build();
         var paymentDetails = new PaymentDetails(UUID.randomUUID(),
                 LocalDateTime.now(),
                 BigDecimal.valueOf(50.0));
-        given(paymentPort.executePayment(order)).willReturn(paymentDetails);
+        given(paymentPort.executePayment(any(Order.class))).willReturn(paymentDetails);
+        given(retrieveCustomer.retrieve(customer.getId())).willReturn(customer);
 
         // WHEN
-        payOrderUseCase.payOrder(order);
+        var orderReturned = payOrderUseCase.payOrder(customer.getId());
 
         // THEN
-        assertEquals(OrderStatus.PAID, order.getOrderStatus());
-        assertNotNull(order.getPaymentDetails());
+        assertEquals(OrderStatus.PAID, orderReturned.getOrderStatus());
+        assertNotNull(orderReturned.getPaymentDetails());
     }
 }

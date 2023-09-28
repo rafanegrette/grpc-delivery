@@ -1,5 +1,6 @@
 grpc:
   enableReflection: true
+  port: 6566
 spring:
   cassandra:
     schema-action: create-if-not-exists

@@ -3,7 +3,7 @@ package com.perficient.orderapp.infrastructure.adapter.out.persistence.mapper;
 import com.perficient.orderapp.domain.Order;
 import com.perficient.orderapp.domain.PaymentDetails;
 import com.perficient.orderapp.domain.OrderStatus;
-import com.perficient.orderapp.domain.ProductItem;
+import com.perficient.orderapp.domain.mother.ProductItemMother;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.entity.OrderEntity;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.entity.PaymentDetailsEntity;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.entity.ProductItemEntity;
@@ -11,16 +11,13 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class OrderEntityMapperTest {
-
-    private final String PRODUCT_NAME = "Potatoes";
-    private final String CATEGORY = "Fast Food";
 
     @Test
     void test_order_to_order_entity() {
@@ -29,21 +26,16 @@ public class OrderEntityMapperTest {
         var paymentDetailId = UUID.randomUUID();
         var paymentDate = LocalDateTime.now();
         var productId = UUID.randomUUID();
-        var productItem = new ProductItem(
-                productId,
-                PRODUCT_NAME,
-                CATEGORY,
-                3,
-                BigDecimal.TEN,
-                BigDecimal.ZERO
-        );
+        var productItem = ProductItemMother.product1
+                .id(productId)
+                .build();
+
         var productItemEntity = new ProductItemEntity(
                 productId,
-                PRODUCT_NAME,
-                CATEGORY,
-                3,
-                BigDecimal.TEN,
-                BigDecimal.ZERO
+                productItem.getName(),
+                productItem.getCategory(),
+                productItem.getPrice(),
+                productItem.getDiscount()
         );
         var paymentDetails = PaymentDetails.builder()
                 .paymentDate(paymentDate)
@@ -56,7 +48,7 @@ public class OrderEntityMapperTest {
                 .orderStatus(OrderStatus.IN_PROGRESS)
                 .totalPrice(BigDecimal.TEN)
                 .paymentDetails(paymentDetails)
-                .productItems(Set.of(productItem))
+                .productItems(Map.of(productItem, 1))
                 .build();
         var paymentDetailEntity = new PaymentDetailsEntity(
                 paymentDetailId,
@@ -66,14 +58,15 @@ public class OrderEntityMapperTest {
         var orderEntity = new OrderEntity(
                 orderId,
                 customerId,
-                Set.of(productItemEntity),
+                Map.of(productItemEntity, 1),
                 paymentDetailEntity,
                 BigDecimal.TEN,
                 "IN_PROGRESS");
 
-        //order.
+        // When
         var orderEntityReturned = OrderEntityMapper.INSTANCE.map(order);
 
+        // Then
         assertEquals(orderEntity, orderEntityReturned);
     }
 }

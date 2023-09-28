@@ -14,7 +14,6 @@ public record ProductItemEntity (
     UUID id,
     String name,
     String category,
-    int quantity,
     BigDecimal price,
     BigDecimal discount) {
 

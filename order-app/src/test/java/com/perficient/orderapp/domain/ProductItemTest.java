@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import static com.perficient.orderapp.domain.ProductItem.ERROR_QUANTITY_LESS_THAN_0;
+import static com.perficient.orderapp.domain.ProductItem.ERROR_PRICE_LESS_THAN_0;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -19,10 +19,9 @@ class ProductItemTest {
             new ProductItem(id,
                     "Donut",
                     "Food",
-                    -3,
-                    BigDecimal.valueOf(2.5),
+                    BigDecimal.valueOf(-2.5),
                     BigDecimal.ZERO));
 
-        assertEquals(ERROR_QUANTITY_LESS_THAN_0, exception.getMessage());
+        assertEquals(ERROR_PRICE_LESS_THAN_0, exception.getMessage());
     }
 }
