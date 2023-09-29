@@ -12,7 +12,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 class CartStreamResponse implements StreamObserver<AddProductRequest> {
 
-    private final UUID CUSTOMER_ID = UUID.fromString("6d303f86-3e90-491e-b98c-96b7d32b0e9d");
+    private final UUID CUSTOMER_ID = UUID.fromString("63d89df6-32bb-47ea-861c-a72605a833fe");
     private final StreamObserver<CartResponse> responseObserver;
 
     private final AddProductUseCase addProductUseCase;

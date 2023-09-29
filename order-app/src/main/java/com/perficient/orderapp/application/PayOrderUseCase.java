@@ -13,7 +13,7 @@ public class PayOrderUseCase {
     private final PaymentPort paymentPort;
     private final RetrieveCustomer retrieveCustomer;
 
-    public Order payOrder(UUID customerId) {
+    public Order pay(UUID customerId) {
         var customer = retrieveCustomer(customerId);
         Order order = new Order(customer, customer.getCart());
         PaymentDetails paymentDetails = paymentPort.executePayment(order);

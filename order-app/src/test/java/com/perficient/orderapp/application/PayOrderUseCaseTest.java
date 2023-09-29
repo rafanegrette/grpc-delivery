@@ -42,7 +42,7 @@ class PayOrderUseCaseTest {
         given(retrieveCustomer.retrieve(customer.getId())).willReturn(customer);
 
         // WHEN
-        var orderReturned = payOrderUseCase.payOrder(customer.getId());
+        var orderReturned = payOrderUseCase.pay(customer.getId());
 
         // THEN
         assertEquals(OrderStatus.PAID, orderReturned.getOrderStatus());

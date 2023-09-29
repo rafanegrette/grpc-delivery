@@ -10,6 +10,7 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Service
@@ -34,5 +35,6 @@ public class ProductApi implements RetrieveProductItem {
                 .build();
         var menuResponse = productsGrpcApi.getProduct(productRequest);
         return ProductMapper.INSTANCE.map(menuResponse);
+        //return new ProductItem(productId, "Beans", "Vegetables", BigDecimal.valueOf(2.5), BigDecimal.ZERO);
     }
 }

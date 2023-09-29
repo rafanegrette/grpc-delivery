@@ -39,7 +39,7 @@ public class CassandraOrderPersistenceTest extends AbstractIntegrationTest{
 
         // then
         assertFalse(orderReturned.isEmpty());
-        assertEquals(2, orderReturned.get().productItemEntities().size());
+        assertEquals(2, orderReturned.get().getProductItemEntities().size());
     }
 
 

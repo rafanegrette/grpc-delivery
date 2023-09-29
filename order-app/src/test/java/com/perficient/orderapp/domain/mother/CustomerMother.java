@@ -11,6 +11,7 @@ public class CustomerMother {
             .id(customerId)
             .name("ralph")
             .address("742 Evergreen Terrace");
+
     public static class CustomerBuilder {
         private UUID id;
         private String name;
