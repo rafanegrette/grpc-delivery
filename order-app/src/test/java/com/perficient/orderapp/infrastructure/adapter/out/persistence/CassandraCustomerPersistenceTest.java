@@ -10,10 +10,15 @@ import com.perficient.orderapp.infrastructure.adapter.out.persistence.repository
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.cassandra.DataCassandraTest;
-import org.springframework.boot.testcontainers.context.ImportTestcontainers;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.context.annotation.Import;
+import org.testcontainers.containers.CassandraContainer;
+import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 
 @DataCassandraTest(
         properties = { "spring.cassandra.schema-action=create-if-not-exists",
@@ -21,31 +26,19 @@ import static org.junit.jupiter.api.Assertions.*;
                 "spring.cassandra.connection.init-query-timeout=60s",
                 "spring.cassandra.request.timeout=60s" }
 )
-@ImportTestcontainers(AbstractIntegrationTest.class)
+@Import(KeyspaceTestConfiguration.class)
 @Testcontainers(disabledWithoutDocker = true)
 class CassandraCustomerPersistenceTest {
+
+    @Container
+    @ServiceConnection
+    static CassandraContainer<?> cassandra = new CassandraContainer<>(DockerImageName.parse("cassandra"));
 
     @Autowired
     CassandraCustomerRepository cassandraCustomerRepository;
 
     @Autowired
     CassandraCartRepository cassandraCartRepository;
-
-    @Test
-    void given_customer_should_retrieve_success() {
-        // Given
-        CassandraCustomerPersistence customerPersistence = new CassandraCustomerPersistence(
-                cassandraCustomerRepository,cassandraCartRepository);
-        var customerGiven = CustomerMother.customer.build();
-        var customerEntity = CustomerEntityMapper.INSTANCE.map(customerGiven);
-        cassandraCustomerRepository.save(customerEntity);
-
-        // When
-        var customerReturned = customerPersistence.retrieve(customerGiven.getId());
-
-        // Then
-        assertEquals(customerGiven, customerReturned);
-    }
 
     @Test
     void should_save_cart_with_products_success() {
@@ -62,4 +55,24 @@ class CassandraCustomerPersistenceTest {
         // Then
         assertEquals(cart, cartReturned);
     }
+
+    @Test
+    void should_retrieve_customer_with_cart_success() {
+        // Given
+        CassandraCustomerPersistence customerPersistence = new CassandraCustomerPersistence(
+                cassandraCustomerRepository,cassandraCartRepository);
+        var customerGiven = CustomerMother.customer.build();
+        customerGiven.setCart(CartMother.cart.build());
+        var customerEntity = CustomerEntityMapper.INSTANCE.map(customerGiven);
+        var cartEntity = CartEntityMapper.INSTANCE.map(customerGiven.getCart());
+        cassandraCustomerRepository.save(customerEntity);
+        cassandraCartRepository.save(cartEntity);
+
+        // When
+        var customerReturned = customerPersistence.retrieve(customerGiven.getId());
+
+        // Then
+        assertEquals(customerGiven, customerReturned);
+    }
+
 }
