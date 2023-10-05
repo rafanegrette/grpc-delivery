@@ -23,7 +23,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class AddProductsToCartServiceGrpcTest {
+class AddProductsServiceGrpcTest {
 
     @Mock
     AddProductUseCase addProductUseCase;
@@ -32,7 +32,7 @@ class AddProductsToCartServiceGrpcTest {
     AddProductsToCartServiceGrpc addProductServiceGrpc;
 
     @Test
-    void AddProductsToOrder() {
+    void AddProductsToCart() {
         // GIVEN
         var customer = CustomerMother.customer.build();
         var product1 = ProductItemMother.product1.build();

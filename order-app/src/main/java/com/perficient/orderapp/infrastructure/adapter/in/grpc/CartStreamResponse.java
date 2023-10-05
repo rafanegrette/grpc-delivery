@@ -19,7 +19,6 @@ class CartStreamResponse implements StreamObserver<AddProductRequest> {
 
     @Override
     public void onNext(AddProductRequest productRequest) {
-
         addProductUseCase.addProductToCart(
                 UUID.fromString(productRequest.getCustomerId()),
                 UUID.fromString(productRequest.getId()),

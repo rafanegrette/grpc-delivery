@@ -37,7 +37,7 @@ message OrderResponse {
   string orderStatus = 5;
 }
 
-service cartService {
+service CartService {
   rpc addProduct(stream AddProductRequest) returns (CartResponse) {}
 }
 

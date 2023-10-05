@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class CustomerMother {
 
-    public static UUID customerId = UUID.randomUUID();
+    public static UUID customerId = UUID.fromString("63d89df6-32bb-47ea-861c-a72605a833fe");
     public static CustomerBuilder customer = new CustomerBuilder()
             .id(customerId)
             .name("ralph")
