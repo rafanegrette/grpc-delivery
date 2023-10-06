@@ -1,6 +1,5 @@
-package com.perficient.infrastructure.client;
+package com.perficient.grpc.invoice.client;
 
-import com.perficient.proto.invoice.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
@@ -13,6 +12,7 @@ public class InvoiceClient {
         .build();
 
     //DummyServiceGrpc.DummyServiceBlockingStub syncClient = DummyServiceGrpc.newBlockingStub(managedChannel);
+    /*
     InvoiceServiceGrpc.InvoiceServiceBlockingStub syncClient = InvoiceServiceGrpc.newBlockingStub(managedChannel);
     InvoiceRequest request = InvoiceRequest.newBuilder()
         .setClient("112233")
@@ -25,16 +25,21 @@ public class InvoiceClient {
         .setProductId(11)
         .setValue(11)
         .build();
+
+     */
     /*
     InvoiceResponse response = syncClient.invoice(request);
     System.out.println("Invoice response:::"+response.getInvoice().getInvoiceId());
     System.out.println(("Invoice response:::"+response.getInvoice().getCreationDate().getSeconds()));
      */
 
+    /*
     syncClient.invoiceManyTimesServer(invoiceManyTimesRequest).forEachRemaining(invoiceManyTimesResponse -> {
       System.out.println(invoiceManyTimesResponse.getInvoice().getInvoiceId());
       System.out.println(invoiceManyTimesResponse.getInvoice().getCreationDate().getSeconds());
-    });
+
+     */
+    //});
 
 
     System.out.println("Shutting down channel");

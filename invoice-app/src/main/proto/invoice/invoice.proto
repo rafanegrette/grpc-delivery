@@ -8,19 +8,20 @@ option java_package = "com.perficient.proto.invoice";
 option java_multiple_files = true;
 
 message Invoice {
-  int32 invoice_id = 1;
-  bool result = 2;
-  google.protobuf.Timestamp creation_date = 3;
+  string invoice_id = 1;
+  string request_id = 2;
+  string client = 3;
+  string order_id = 4;
+  double value = 5;
 }
 
 message InvoiceRequest {
-  int32 product_id = 1;
-  string client = 2;
-  double value = 3;
+  Invoice invoice = 1;
 }
 
 message InvoiceResponse {
   Invoice invoice = 1;
+  bool result = 2;
 }
 
 message InvoiceManyTimesRequest {
@@ -33,17 +34,7 @@ message InvoiceManyTimesResponse {
   Invoice invoice = 1;
 }
 
-message CreateInvoiceRequest {
-  Invoice invoice = 1;
-}
-
-message CreateInvoiceResponse {
-  Invoice invoice = 1;
-}
-
 service InvoiceService {
-  rpc CreateInvoice(CreateInvoiceRequest) returns (CreateInvoiceResponse) {};
-
   //Unary
   rpc Invoice(InvoiceRequest) returns (InvoiceResponse) {};
 
