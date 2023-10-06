@@ -1,73 +1,70 @@
 plugins {
-    id 'java-library'
-    id "com.google.protobuf" version "0.9.4"
-    id 'org.springframework.boot' version '2.7.15'
-    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id("java")
+    id("idea")
+    id ("com.google.protobuf") version "0.8.19"
+    id ("io.github.lognet.grpc-spring-boot") version "5.1.4"
 }
 
 
 repositories {
-    mavenCentral()
+	mavenCentral()
 }
 
 ext {
-    set('testcontainersVersion', "1.18.3")
+	set('testcontainersVersion', "1.18.3")
 }
 
 dependencies {
-    implementation 'net.devh:grpc-client-spring-boot-starter:2.14.0.RELEASE'
-    implementation 'net.devh:grpc-spring-boot-starter:4.6.0'
-    implementation 'org.springframework.boot:spring-boot-starter-data-cassandra'
-    implementation 'com.datastax.astra:astra-spring-boot-starter:0.4'
-    implementation group: 'com.h2database', name: 'h2', version: '1.3.148'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'net.devh:grpc-spring-boot-starter:2.14.0.RELEASE'
-    implementation 'jakarta.persistence:jakarta.persistence-api:3.0.0'
-    implementation 'org.hibernate:hibernate-core:5.6.4.Final'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.testcontainers:cassandra'
-    testImplementation 'org.testcontainers:junit-jupiter'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-    // Otras dependencias
-    compileOnly 'org.projectlombok:lombok:1.18.20'
-    annotationProcessor 'org.projectlombok:lombok:1.18.20'
-
+    runtimeOnly ("io.grpc:grpc-netty-shaded:1.58.0")
+    implementation ("io.grpc:grpc-protobuf:1.58.0")
+    implementation ("io.grpc:grpc-stub:1.58.0")
+    implementation("com.google.protobuf:protobuf-java:3.17.3")
+    compileOnly ("org.apache.tomcat:annotations-api:6.0.53") // necessary for Java 9+
+    testImplementation(platform("org.junit:junit-bom:5.9.1"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    implementation("org.mongodb:mongodb-driver-sync:4.10.2")
+    implementation("org.mongodb:mongodb-driver-reactivestreams:4.10.2")
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb:3.1.2")
+    implementation("org.slf4j:slf4j-api:1.7.32")
+    implementation("ch.qos.logback:logback-classic:1.2.9")
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb:3.1.2")
+    implementation("org.springframework.boot:spring-boot-starters:2.1.2.RELEASE")
+    implementation("org.springframework.boot:spring-boot-starter-websocket:3.1.2")
+    implementation("org.mapstruct:mapstruct:1.4.2.Final")
+    testImplementation("org.springframework.boot:spring-boot-starter-test:3.1.4")
+    compileOnly("org.projectlombok:lombok:1.18.30")
+    annotationProcessor("org.projectlombok:lombok:1.18.28")
+    annotationProcessor("org.mapstruct:mapstruct-processor:1.4.2.Final")
 }
 
-dependencyManagement {
-    imports {
-        mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
-    }
-}
 
 tasks.named('test') {
-    useJUnitPlatform()
+	useJUnitPlatform()
 }
 
 sourceSets {
-    main {
-        java {
-            srcDirs 'build/generated/source/proto/main/grpc'
-            srcDirs 'build/generated/source/proto/main/java'
-        }
-    }
+	main {
+		java {
+			srcDirs 'build/generated/source/proto/main/grpc'
+			srcDirs 'build/generated/source/proto/main/java'
+		}
+	}
 }
 
 protobuf {
-    protoc {
-        artifact = 'com.google.protobuf:protoc:3.10.1'
-    }
+	protoc {
+		artifact = 'com.google.protobuf:protoc:3.10.1'
+	}
 
-    plugins {
-        grpc {
-            artifact = 'io.grpc:protoc-gen-grpc-java:1.25.0'
-        }
-    }
+	plugins {
+		grpc {
+			artifact = 'io.grpc:protoc-gen-grpc-java:1.25.0'
+		}
+	}
 
-    generateProtoTasks {
-        all()*.plugins {
-            grpc {}
-        }
-    }
+	generateProtoTasks {
+		all()*.plugins {
+			grpc {}
+		}
+	}
 }
