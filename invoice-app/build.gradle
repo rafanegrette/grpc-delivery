@@ -7,11 +7,11 @@ plugins {
 
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 ext {
-	set('testcontainersVersion', "1.18.3")
+    set('testcontainersVersion', "1.18.3")
 }
 
 dependencies {
@@ -39,32 +39,32 @@ dependencies {
 
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 sourceSets {
-	main {
-		java {
-			srcDirs 'build/generated/source/proto/main/grpc'
-			srcDirs 'build/generated/source/proto/main/java'
-		}
-	}
+    main {
+        java {
+            srcDirs 'build/generated/source/proto/main/grpc'
+            srcDirs 'build/generated/source/proto/main/java'
+        }
+    }
 }
 
 protobuf {
-	protoc {
-		artifact = 'com.google.protobuf:protoc:3.10.1'
-	}
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.10.1'
+    }
 
-	plugins {
-		grpc {
-			artifact = 'io.grpc:protoc-gen-grpc-java:1.25.0'
-		}
-	}
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.25.0'
+        }
+    }
 
-	generateProtoTasks {
-		all()*.plugins {
-			grpc {}
-		}
-	}
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+        }
+    }
 }
