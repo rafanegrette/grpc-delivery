@@ -7,6 +7,10 @@ message MenuRequest {
   int32 menu_id = 1;
 }
 
+message ProductRequest{
+  string product_id = 1;
+}
+
 message MenuResponse {
   string product_id = 1;
   int32 menu_id = 2;
@@ -16,6 +20,6 @@ message MenuResponse {
 }
 
 service FetchProducts {
-  rpc products(MenuRequest) returns (MenuResponse) {}
   rpc productsStream(MenuRequest) returns (stream MenuResponse) {}
+  rpc getProduct(ProductRequest) returns (MenuResponse);
 }
