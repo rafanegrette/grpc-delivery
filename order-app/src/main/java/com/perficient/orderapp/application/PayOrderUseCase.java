@@ -4,9 +4,11 @@ import com.perficient.orderapp.domain.*;
 import com.perficient.orderapp.domain.port.PaymentPort;
 import com.perficient.orderapp.domain.port.RetrieveCustomer;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Service
 @RequiredArgsConstructor
 public class PayOrderUseCase {
 
