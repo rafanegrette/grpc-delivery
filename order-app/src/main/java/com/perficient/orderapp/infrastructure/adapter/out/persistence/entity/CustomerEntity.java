@@ -1,16 +1,22 @@
 package com.perficient.orderapp.infrastructure.adapter.out.persistence.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 import java.util.UUID;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 @Table("Customer")
-public record CustomerEntity (
+public class CustomerEntity {
     @PrimaryKey
-    UUID customerId,
-    String name,
-    String address,
-    UUID cartId) {
+    private UUID customerId;
+    private String name;
+    private String address;
+    private UUID cartId;
 
 }

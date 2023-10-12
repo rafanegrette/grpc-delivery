@@ -23,7 +23,11 @@ public class CassandraCustomerPersistence implements RetrieveCustomer, SaveCusto
     @Override
     public Customer retrieve(UUID customerId) {
         var customerEntity = cassandraCustomerRepository.findById(customerId).orElseThrow();
-        return CustomerEntityMapper.INSTANCE.map(customerEntity);
+        var cartEntity = cassandraCartRepository.findById(customerEntity.getCartId());
+        var cart = CartEntityMapper.INSTANCE.map(cartEntity.orElseThrow());
+        var customer = CustomerEntityMapper.INSTANCE.map(customerEntity);
+        customer.setCart(cart);
+        return customer;
     }
 
     // TODO saveCart should be in his own class
@@ -33,4 +37,5 @@ public class CassandraCustomerPersistence implements RetrieveCustomer, SaveCusto
         var cartEntity = CartEntityMapper.INSTANCE.map(cart);
         cassandraCartRepository.save(cartEntity);
     }
+
 }

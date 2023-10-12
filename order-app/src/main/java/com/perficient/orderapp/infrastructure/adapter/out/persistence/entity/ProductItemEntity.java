@@ -1,5 +1,8 @@
 package com.perficient.orderapp.infrastructure.adapter.out.persistence.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
@@ -7,14 +10,17 @@ import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @UserDefinedType("product_item")
-public record ProductItemEntity (
+public class ProductItemEntity {
     @NonNull
     @PrimaryKey
-    UUID id,
-    String name,
-    String category,
-    BigDecimal price,
-    BigDecimal discount) {
+    private UUID id;
+    private String name;
+    private String category;
+    private BigDecimal price;
+    private BigDecimal discount;
 
 }
