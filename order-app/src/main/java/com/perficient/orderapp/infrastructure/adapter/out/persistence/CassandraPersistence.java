@@ -28,16 +28,6 @@ public class CassandraPersistence {
     private final CassandraCustomerRepository cassandraCustomerRepository;
     private final CassandraCartRepository cassandraCartRepository;
 
-   /* @Bean
-    CqlSession cqlSession(CqlSessionBuilder cqlSessionBuilder) {
-        cqlSessionBuilder.withKeyspace((String) null);
-        try (CqlSession session = cqlSessionBuilder.build()) {
-            session.execute("CREATE KEYSPACE IF NOT EXISTS order_keyspace"
-                    + " WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };");
-        }
-        return cqlSessionBuilder.withKeyspace("order_keyspace").build();
-    }*/
-
     // TODO remove this initializer
     @Bean
     public CommandLineRunner clr() {

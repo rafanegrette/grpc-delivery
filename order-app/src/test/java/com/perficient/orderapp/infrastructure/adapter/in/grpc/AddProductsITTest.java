@@ -6,6 +6,7 @@ import com.perficient.orderapp.domain.mother.ProductItemMother;
 import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.AddProductRequest;
 import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.CartResponse;
 import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.CartServiceGrpc;
+import com.perficient.orderapp.infrastructure.adapter.out.persistence.config.CreateKeySpace;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.mapper.CartEntityMapper;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.mapper.CustomerEntityMapper;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.repository.CassandraCartRepository;
@@ -61,7 +62,8 @@ public class AddProductsITTest {
     CassandraOrderRepository cassandraOrderRepository;
     @MockBean
     FetchProductsGrpc.FetchProductsBlockingStub productsGrpcApi;
-
+    @MockBean
+    CreateKeySpace createKeySpace;
     protected ManagedChannel inProcChannel;
     protected Channel seletedChannel;
 

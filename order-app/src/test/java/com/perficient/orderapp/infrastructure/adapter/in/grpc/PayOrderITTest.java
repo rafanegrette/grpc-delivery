@@ -4,6 +4,7 @@ import com.perficient.orderapp.domain.mother.CartMother;
 import com.perficient.orderapp.domain.mother.CustomerMother;
 import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.PaymentRequest;
 import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.PaymentServiceGrpc;
+import com.perficient.orderapp.infrastructure.adapter.out.persistence.config.CreateKeySpace;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.mapper.CartEntityMapper;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.mapper.CustomerEntityMapper;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.repository.CassandraCartRepository;
@@ -45,7 +46,8 @@ public class PayOrderITTest {
     CassandraCartRepository cassandraCartRepository;
     @MockBean
     CassandraOrderRepository cassandraOrderRepository;
-
+    @MockBean
+    CreateKeySpace createKeySpace;
     protected ManagedChannel inProcChannel;
     protected Channel seletedChannel;
 
