@@ -24,7 +24,7 @@ public class PayOrderUseCase {
         return order;
     }
 
-    public Customer retrieveCustomer(UUID customerId) {
+    private Customer retrieveCustomer(UUID customerId) {
         return retrieveCustomer.retrieve(customerId);
     }
 }
