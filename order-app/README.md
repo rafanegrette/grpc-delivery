@@ -1,6 +1,25 @@
 # E-Delivery
 ## Order App
 
+Application that manage the Shopping Cart (Cart) tracking adding products and the payment of that cart, if the payment 
+is successful the client will receive an Order.
+
+### Use Case Diagram
+![plot](./img/grpc-order-UseCases.png)
+
+### Sequence Diagram
+![plot](./img/grpc-order-Sequence.png)
+
+### Sequence Diagram
+![plot](./img/grpc-order-Sequence.png)
+
+### Package Diagram
+Here we can see the Dependency Inversion principle, it's the business side of the application how controls the 
+dependencies, according to clean architecture.
+
+![plot](./img/grpc-order-Package.png)
+
+### Configuration
 Configuration steps for local environment:
 
 1) Install Java 17

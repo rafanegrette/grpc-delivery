@@ -17,8 +17,7 @@ public class Cart {
 
     public Cart() {
         this.id = UUID.randomUUID();
-        products = new HashMap<>();
-        totalPrice = BigDecimal.ZERO;
+        initCart();
     }
 
     public UUID getId() {
@@ -30,6 +29,7 @@ public class Cart {
     }
 
     public void addProduct(ProductItem product) {
+        initCart();
         if (products.containsKey(product)) {
             products.computeIfPresent(product, (key, quantity) -> quantity+ 1);
         } else {
@@ -38,7 +38,12 @@ public class Cart {
         totalPrice = totalPrice.add(product.getPrice());
     }
 
-    public Map<ProductItem, Integer> getProducts() {
-        return products;
+    private void initCart() {
+        if (products == null) {
+            products = new HashMap<>();
+        }
+        if (totalPrice == null) {
+            totalPrice = BigDecimal.ZERO;
+        }
     }
 }
