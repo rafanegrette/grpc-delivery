@@ -1,12 +1,17 @@
 package com.perficient.orderapp.infrastructure.adapter.out.persistence;
 
+import com.datastax.oss.driver.api.core.CqlSession;
+import com.datastax.oss.driver.api.core.CqlSessionBuilder;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.entity.CartEntity;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.entity.CustomerEntity;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.repository.CassandraCartRepository;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.repository.CassandraCustomerRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.cassandra.core.CassandraOperations;
 import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
 import org.springframework.stereotype.Component;
 
@@ -19,8 +24,19 @@ import java.util.UUID;
 @EnableCassandraRepositories(basePackages = "com.perficient.orderapp.infrastructure.adapter.out.persistence")
 public class CassandraPersistence {
 
+
     private final CassandraCustomerRepository cassandraCustomerRepository;
     private final CassandraCartRepository cassandraCartRepository;
+
+   /* @Bean
+    CqlSession cqlSession(CqlSessionBuilder cqlSessionBuilder) {
+        cqlSessionBuilder.withKeyspace((String) null);
+        try (CqlSession session = cqlSessionBuilder.build()) {
+            session.execute("CREATE KEYSPACE IF NOT EXISTS order_keyspace"
+                    + " WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };");
+        }
+        return cqlSessionBuilder.withKeyspace("order_keyspace").build();
+    }*/
 
     // TODO remove this initializer
     @Bean
@@ -42,4 +58,6 @@ public class CassandraPersistence {
             cassandraCartRepository.save(cartEntity);
         };
     }
+
+
 }

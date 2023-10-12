@@ -41,6 +41,12 @@ dependencies {
 	testImplementation 'org.testcontainers:junit-jupiter'
 }
 
+bootBuildImage {
+	imageName = "javahub/order-grpc-app"
+	verboseLogging = true
+
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
