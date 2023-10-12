@@ -1,15 +1,14 @@
-package com.perficient.orderapp.infrastructure.adapter.in.grpc;
+package com.perficient.orderapp.ingrastructure.adapter.in.grpc;
 
-import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.AddProductRequest;
 import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.CartResponse;
 import io.grpc.stub.StreamObserver;
 
 import java.util.concurrent.CountDownLatch;
 
-public class CartStreamminObserver implements StreamObserver<CartResponse> {
+public class CartStreamingObserver implements StreamObserver<CartResponse> {
     private final CountDownLatch latch;
     private CartResponse cartResponse;
-    public CartStreamminObserver(CountDownLatch latch) {
+    public CartStreamingObserver(CountDownLatch latch) {
         this.latch = latch;
     }
 

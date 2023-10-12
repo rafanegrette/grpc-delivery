@@ -47,6 +47,12 @@ bootBuildImage {
 
 }
 
+sourceSets {
+	test {
+		java.srcDirs = ['src/test/java/unit', 'src/test/java/intgr', 'src/test/java/comp']
+	}
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }

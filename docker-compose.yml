@@ -12,6 +12,8 @@ services:
     depends_on:
       cassandra-order-db:
         condition: service_healthy
+    ports:
+      - "6566:6566"
   cassandra-order-db:
     image: cassandra:latest
     container_name: cassandra-db

@@ -1,15 +1,18 @@
-package com.perficient.orderapp.infrastructure.adapter.in.grpc;
+package com.perficient.orderapp.ingrastructure.adapter.in.grpc;
 
 import com.perficient.orderapp.domain.mother.CartMother;
 import com.perficient.orderapp.domain.mother.CustomerMother;
-import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.PaymentRequest;
-import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.PaymentServiceGrpc;
+import com.perficient.orderapp.domain.mother.ProductItemMother;
+import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.AddProductRequest;
+import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.CartServiceGrpc;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.config.CreateKeySpace;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.mapper.CartEntityMapper;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.mapper.CustomerEntityMapper;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.repository.CassandraCartRepository;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.repository.CassandraCustomerRepository;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.repository.CassandraOrderRepository;
+import com.perficient.orderapp.infrastructure.adapter.out.productapp.model.FetchProductsGrpc;
+import com.perficient.orderapp.infrastructure.adapter.out.productapp.model.MenuResponse;
 import io.grpc.Channel;
 import io.grpc.ManagedChannel;
 import io.grpc.inprocess.InProcessChannelBuilder;
@@ -20,25 +23,33 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.cassandra.CassandraDataAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.util.StringUtils;
-import org.testcontainers.shaded.org.apache.commons.lang3.NotImplementedException;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.concurrent.CountDownLatch;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestPropertySource(properties = {"grpc.inProcessServerName=testServerForPayment",
-        "grpc.enabled=false"})
+@TestPropertySource(properties = {"grpc.inProcessServerName=testServerForCart",
+                                "grpc.enabled=false"})
 @ContextConfiguration(initializers = AddProductsITTest.TestAppContextInitializer.class )
 @EnableAutoConfiguration(exclude = CassandraDataAutoConfiguration.class)
-public class PayOrderITTest {
+public class AddProductsITTest {
+    static class TestAppContextInitializer implements ApplicationContextInitializer<GenericApplicationContext> {
+        @Override
+        public void initialize(GenericApplicationContext applicationContext) {
+            applicationContext.setAllowCircularReferences(false);
+        }
+    }
 
     @MockBean
     CassandraCustomerRepository cassandraCustomerRepository;
@@ -47,6 +58,8 @@ public class PayOrderITTest {
     @MockBean
     CassandraOrderRepository cassandraOrderRepository;
     @MockBean
+    FetchProductsGrpc.FetchProductsBlockingStub productsGrpcApi;
+    @MockBean
     CreateKeySpace createKeySpace;
     protected ManagedChannel inProcChannel;
     protected Channel seletedChannel;
@@ -54,7 +67,7 @@ public class PayOrderITTest {
     @Autowired
     protected GRpcServerProperties gRpcServerProperties;
 
-    @BeforeEach
+    @BeforeAll
     public void setupChannels() throws IOException {
         if (StringUtils.hasText(gRpcServerProperties.getInProcessServerName())) {
             inProcChannel = InProcessChannelBuilder
@@ -67,32 +80,49 @@ public class PayOrderITTest {
         seletedChannel = inProcChannel;
     }
 
-
     @AfterAll
     public void shutdownChannels() {
         inProcChannel.shutdownNow();
     }
 
     @Test
-    @DisplayName("Given a Cart with products when pay should return the order")
-    void payOrder() {
-        // Given
-        var paymentService = PaymentServiceGrpc.newBlockingStub(seletedChannel);
-        var paymentRequest = PaymentRequest.newBuilder()
-                .setPaymentMethod("CASH")
+    @DisplayName("Given a stream of valid product added- when finish - should return the summary cart")
+    void addProductTest() throws InterruptedException {
+
+        //Given
+        CartServiceGrpc.CartServiceStub cartService = CartServiceGrpc.newStub(seletedChannel);
+        var productRequest1 = AddProductRequest.newBuilder()
+                .setId(ProductItemMother.product_id_1.toString())
                 .setCustomerId(CustomerMother.customerId.toString())
+                .setQuantity(1)
                 .build();
+        CountDownLatch latch = new CountDownLatch(1);
+        CartStreamingObserver cartResponseObserver = new CartStreamingObserver(latch);
+
+        given(productsGrpcApi.getProduct(any())).willReturn(MenuResponse.newBuilder()
+                .setProductId(ProductItemMother.product_id_1.toString())
+                .setCategory("")
+                .setMenuId(1)
+                .setPrice(45)
+                .build());
+
         var customerEntity = CustomerEntityMapper.INSTANCE.map(CustomerMother.customer.build());
-        var cartEntity = CartEntityMapper.INSTANCE.map(CartMother.cart.build());
-
         given(cassandraCustomerRepository.findById(CustomerMother.customerId)).willReturn(Optional.of(customerEntity));
+        var cartEntity = CartEntityMapper.INSTANCE.map(CartMother.cart.build());
         given(cassandraCartRepository.findById(customerEntity.getCartId())).willReturn(Optional.of(cartEntity));
-
         // When
-
-        var orderResponse = paymentService.payOrder(paymentRequest);
+        var productsObserver = cartService.addProduct(cartResponseObserver);
+        productsObserver.onNext(productRequest1);
+        productsObserver.onCompleted();
+        latch.await();
 
         // Then
-        assertNotNull(orderResponse);
+        var cartResponse = cartResponseObserver.getCart();
+       assertNotNull(cartResponse);
+       assertEquals(2, cartResponse.getProductsList().size());
+
     }
+
+
+
 }
