@@ -2,6 +2,7 @@ package com.perficient.orderapp.infrastructure.adapter.out.persistence;
 
 import com.perficient.orderapp.domain.Order;
 import com.perficient.orderapp.domain.OrderStatus;
+import com.perficient.orderapp.domain.PaymentDetails;
 import com.perficient.orderapp.domain.mother.ProductItemMother;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.repository.CassandraOrderRepository;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,8 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
 
@@ -50,6 +53,11 @@ public class CassandraOrderPersistenceTest {
                 .customerId(UUID.randomUUID())
                 .orderStatus(OrderStatus.PAID)
                 .productItems(products)
+                .paymentDetails(PaymentDetails.builder()
+                        .id(UUID.randomUUID())
+                        .paymentDate(LocalDateTime.now())
+                        .amount(BigDecimal.valueOf(55.3))
+                        .build())
                 .build();
 
         // When
@@ -59,6 +67,8 @@ public class CassandraOrderPersistenceTest {
 
         // then
         assertFalse(orderReturned.isEmpty());
+        assertNotNull(orderReturned.get().getPaymentDetailsEntity());
+        assertEquals(BigDecimal.valueOf(55.3), orderReturned.get().getPaymentDetailsEntity().getAmount());
         assertEquals(2, orderReturned.get().getProductItemEntities().size());
     }
 

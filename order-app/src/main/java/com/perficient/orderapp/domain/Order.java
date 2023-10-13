@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NonNull;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
 
@@ -21,6 +22,7 @@ public class Order {
     private BigDecimal totalPrice;
     private PaymentDetails paymentDetails;
     private OrderStatus orderStatus;
+    private LocalDateTime creationDate;
 
     public Order(Customer customer, Cart cart) {
         orderId = UUID.randomUUID();
@@ -28,5 +30,6 @@ public class Order {
         productItems = cart.getProducts();
         totalPrice = cart.getTotalPrice();
         orderStatus = OrderStatus.IN_PROGRESS;
+        creationDate = LocalDateTime.now();
     }
 }

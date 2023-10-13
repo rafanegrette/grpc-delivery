@@ -1,17 +1,12 @@
 package com.perficient.orderapp.infrastructure.adapter.out.persistence;
 
-import com.datastax.oss.driver.api.core.CqlSession;
-import com.datastax.oss.driver.api.core.CqlSessionBuilder;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.entity.CartEntity;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.entity.CustomerEntity;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.repository.CassandraCartRepository;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.repository.CassandraCustomerRepository;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.cassandra.core.CassandraOperations;
 import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
 import org.springframework.stereotype.Component;
 
@@ -39,6 +34,9 @@ public class CassandraPersistence {
                     "TestUser",
                     "742 Evergreen Terrace",
                     idCart);
+
+            if (cassandraCustomerRepository.existsById(idUser)) return;
+
             cassandraCustomerRepository.save(customerEntity);
 
             CartEntity cartEntity = new CartEntity(

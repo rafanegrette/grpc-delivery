@@ -10,11 +10,12 @@ import java.util.Map;
 import java.util.UUID;
 
 public class OrderMother {
-    static BigDecimal AMOUNT = BigDecimal.valueOf(556.3);
+    public static final BigDecimal AMOUNT = BigDecimal.valueOf(556.3);
     public static Order.OrderBuilder order = Order.builder()
             .orderId(UUID.randomUUID())
             .orderStatus(OrderStatus.COMPLETED)
             .customerId(CustomerMother.customerId)
+            .creationDate(LocalDateTime.now().minusHours(5))
             .paymentDetails(PaymentDetails.builder()
                     .id(UUID.randomUUID())
                     .paymentDate(LocalDateTime.now())

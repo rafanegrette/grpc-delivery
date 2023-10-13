@@ -1,0 +1,4 @@
+apps:
+  product-app:
+    port: 6565
+    host: localhost

@@ -1,7 +1,6 @@
 package com.perficient.orderapp.infrastructure.adapter.in.grpc;
 
 import com.perficient.orderapp.application.PayOrderUseCase;
-import com.perficient.orderapp.domain.Order;
 import com.perficient.orderapp.domain.mother.CustomerMother;
 import com.perficient.orderapp.domain.mother.OrderMother;
 import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.OrderResponse;
@@ -13,10 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -48,6 +44,7 @@ public class PayOrderGrpcTest {
         // Then
         assertNotNull(orderList);
         assertFalse(orderList.isEmpty());
-        assertNotNull(orderList.get(0).getPaymentDetail());
+        assertNotEquals(0, orderList.get(0).getCreationDate().getSeconds());
+        assertEquals(OrderMother.AMOUNT.doubleValue(), orderList.get(0).getPaymentDetail().getAmount());
     }
 }

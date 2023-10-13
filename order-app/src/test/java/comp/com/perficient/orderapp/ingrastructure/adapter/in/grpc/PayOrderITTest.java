@@ -23,13 +23,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.util.StringUtils;
-import org.testcontainers.shaded.org.apache.commons.lang3.NotImplementedException;
 
 import java.io.IOException;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
@@ -94,5 +92,7 @@ public class PayOrderITTest {
 
         // Then
         assertNotNull(orderResponse);
+        assertNotEquals(0, orderResponse.getCreationDate().getSeconds());
+        assertEquals(2, orderResponse.getProductsList().size());
     }
 }
