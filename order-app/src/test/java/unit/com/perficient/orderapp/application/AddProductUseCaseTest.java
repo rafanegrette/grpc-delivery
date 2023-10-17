@@ -1,5 +1,6 @@
 package com.perficient.orderapp.application;
 
+import com.perficient.orderapp.domain.excepton.ProductNotFoundException;
 import com.perficient.orderapp.domain.mother.CustomerMother;
 import com.perficient.orderapp.domain.mother.ProductItemMother;
 import com.perficient.orderapp.domain.port.*;
@@ -12,9 +13,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AddProductUseCaseTest {
@@ -67,6 +68,26 @@ class AddProductUseCaseTest {
 
         // THEN
         verify(saveCustomerCart, times(1)).saveCart(customer.getCart());
+    }
+
+    @Test()
+    void add_product_throw_product_not_exist() {
+        // GIVEN
+        var product_id_1 = UUID.randomUUID();
+        var customer = CustomerMother.customer.build();
+
+        doThrow(ProductNotFoundException.class)
+                .when(retrieveProductItem)
+                .retrieve(product_id_1);
+
+        // WHEN
+        assertThrows(ProductNotFoundException.class, () ->
+                addProductUseCase.addProductToCart(customer.getId(), product_id_1, 1)
+        );
+
+        // THEN
+        verify(retrieveCustomer, never()).retrieve(any());
+        verify(saveCustomerCart, never()).saveCart(any());
     }
 
 }

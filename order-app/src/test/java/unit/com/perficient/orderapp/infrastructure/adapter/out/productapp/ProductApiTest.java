@@ -1,9 +1,11 @@
 package com.perficient.orderapp.infrastructure.adapter.out.productapp;
 
 import com.perficient.orderapp.domain.ProductItem;
+import com.perficient.orderapp.domain.excepton.ProductNotFoundException;
 import com.perficient.orderapp.infrastructure.adapter.out.productapp.model.FetchProductsGrpc.FetchProductsBlockingStub;
 import com.perficient.orderapp.infrastructure.adapter.out.productapp.model.MenuResponse;
 import com.perficient.orderapp.infrastructure.adapter.out.productapp.model.ProductRequest;
+import io.grpc.StatusRuntimeException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,6 +16,9 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,6 +29,7 @@ public class ProductApiTest {
 
     @InjectMocks
     ProductApi productApi;
+
     @Test
     void retrieve_product_should_success() {
         // GIVEN
@@ -50,5 +56,22 @@ public class ProductApiTest {
         var productReturned = productApi.retrieve(productId);
         // THEN
         assertEquals(productExpected, productReturned);
+    }
+
+    @Test
+    void retrieve_product_should_throw_product_not_found() {
+        // GIVEN
+        var productId = UUID.randomUUID();
+
+        doThrow(StatusRuntimeException.class)
+                .when(productsGrpcApi)
+                .getProduct(any(ProductRequest.class));
+
+        // WHEN
+        ProductNotFoundException productNotFound = assertThrows(ProductNotFoundException.class, () ->
+                productApi.retrieve(productId)
+        );
+        // THEN
+        assertEquals("Product id: "+ productId + ", not found", productNotFound.getMessage());
     }
 }
