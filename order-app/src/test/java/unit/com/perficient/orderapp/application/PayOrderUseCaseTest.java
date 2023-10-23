@@ -1,11 +1,13 @@
 package com.perficient.orderapp.application;
 
+import com.perficient.orderapp.domain.mother.CartMother;
 import com.perficient.orderapp.domain.mother.CustomerMother;
 import com.perficient.orderapp.domain.port.PaymentApp;
 import com.perficient.orderapp.domain.Order;
 import com.perficient.orderapp.domain.OrderStatus;
 import com.perficient.orderapp.domain.PaymentDetails;
 import com.perficient.orderapp.domain.port.RetrieveCustomer;
+import com.perficient.orderapp.domain.port.SaveCustomerCart;
 import com.perficient.orderapp.domain.port.SaveOrder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,6 +34,8 @@ class PayOrderUseCaseTest {
     SaveOrder saveOrder;
     @Mock
     RetrieveCustomer retrieveCustomer;
+    @Mock
+    SaveCustomerCart saveCustomerCart;
     @InjectMocks
     PayOrderUseCase payOrderUseCase;
 
@@ -39,6 +43,7 @@ class PayOrderUseCaseTest {
     void payOrder_should_success() {
         // GIVEN
         var customer = CustomerMother.customer.build();
+        customer.setCart(CartMother.cart.build());
         var paymentDetails = new PaymentDetails(UUID.randomUUID(),
                 LocalDateTime.now(),
                 BigDecimal.valueOf(50.0));
@@ -53,5 +58,8 @@ class PayOrderUseCaseTest {
         assertNotNull(orderReturned.getPaymentDetails());
         assertNotNull(orderReturned.getCreationDate());
         verify(saveOrder, times(1)).save(orderReturned);
+        verify(saveCustomerCart, times(1)).saveCart(customer.getCart());
+        assertEquals(0, customer.getCart().getProducts().size());
+        assertEquals(BigDecimal.ZERO, customer.getCart().getTotalPrice());
     }
 }

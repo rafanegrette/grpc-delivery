@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.UUID;
 
 public class CartMother {
-
+    public static final UUID ID = UUID.randomUUID();
     public static CartBuilder cart = new CartBuilder()
-            .id(UUID.randomUUID())
+            .id(ID)
             .products(Map.of(ProductItemMother.product1.build(), 1,
                     ProductItemMother.product2.build(), 1))
             .totalPrice(BigDecimal.valueOf(14.3));

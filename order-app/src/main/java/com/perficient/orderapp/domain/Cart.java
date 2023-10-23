@@ -38,6 +38,11 @@ public class Cart {
         totalPrice = totalPrice.add(product.getPrice());
     }
 
+    public void clean() {
+        products = new HashMap<>();
+        totalPrice = BigDecimal.ZERO;
+    }
+
     private void initCart() {
         if (products == null) {
             products = new HashMap<>();
