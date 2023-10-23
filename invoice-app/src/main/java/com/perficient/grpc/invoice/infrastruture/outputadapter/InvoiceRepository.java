@@ -1,37 +1,29 @@
 package com.perficient.grpc.invoice.infrastruture.outputadapter;
 
-
-
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 import com.perficient.grpc.invoice.domain.Invoice;
 import com.perficient.grpc.invoice.infrastruture.mapper.InvoiceEntityMapper;
+import com.perficient.grpc.invoice.infrastruture.outputport.EntityRepository;
 import com.perficient.grpc.invoice.infrastruture.persistence.InvoiceEntity;
-import org.bson.Document;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
-import java.util.UUID;
+import java.util.logging.Logger;
+
 @Repository
 public class InvoiceRepository {
-
-  private final MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
-  private final MongoDatabase mongoDatabase = mongoClient.getDatabase("mydb");
-  private final MongoCollection<Document> collection = mongoDatabase.getCollection("invoice");
+  private static final Logger logger = Logger.getLogger(InvoiceRepository.class.getName());
   private final InvoiceEntityMapper invoiceEntityMapper;
-  public InvoiceRepository(InvoiceEntityMapper invoiceEntityMapper) {
+  private final EntityRepository entityRepository;
+
+  public InvoiceRepository(InvoiceEntityMapper invoiceEntityMapper, EntityRepository entityRepository) {
     this.invoiceEntityMapper = invoiceEntityMapper;
+    this.entityRepository = entityRepository;
   }
+
   public Invoice saveInvoice(Invoice invoice){
     InvoiceEntity invoiceEntity = this.invoiceEntityMapper.toInvoiceEntity(invoice);
-    Document document = new Document("client_id", invoiceEntity.getCustomerId())
-        .append("order_id", invoiceEntity.getOrderId())
-        .append("value", invoiceEntity.getValue());
-    //we insert (create) the document in mondoDB
-    collection.insertOne(document);
-    //We retrieve the MongoDB generated ID
-    String id = document.getObjectId("_id").toString();
-    invoice.setId(UUID.randomUUID());
+    this.entityRepository.save(invoiceEntity);
+    InvoiceEntity entity = this.entityRepository.findAll(Sort.by(Sort.Order.desc("paymentDate"))).get(0);
+    invoice.setId(entity.getInvoiceId());
     invoice.setResult(true);
     return invoice;
   }

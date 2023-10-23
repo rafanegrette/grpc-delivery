@@ -10,9 +10,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Invoice {
-  private UUID id;
-  private String customerId;
+  private String id;
+  private String clientId;
   private String orderId;
+  private String requestId;
   private double value;
   private Date paymentDate;
   private Boolean result;

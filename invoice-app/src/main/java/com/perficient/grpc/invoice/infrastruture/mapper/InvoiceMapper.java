@@ -9,16 +9,13 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 
 @Component
-@Mapper
+@Mapper(componentModel = "spring")
 public interface InvoiceMapper {
   InvoiceMapper INSTANCE = Mappers.getMapper(InvoiceMapper.class);
 
- // @Mapping(source = "id", target = "id")
-  @Mapping(source = "invoice.client", target = "customerId")
+  @Mapping(source = "invoice.clientId", target = "clientId")
   @Mapping(source = "invoice.orderId", target = "orderId")
   @Mapping(source = "invoice.value", target = "value")
   Invoice toEntity(InvoiceRequest request);
   Invoice toInvoice(InvoiceEntity invoiceEntity);
-
-
 }
