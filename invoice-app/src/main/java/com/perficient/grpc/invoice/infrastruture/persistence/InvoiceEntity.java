@@ -1,8 +1,10 @@
 package com.perficient.grpc.invoice.infrastruture.persistence;
 
 
+import com.perficient.grpc.invoice.application.Exceptions.CustomException;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -13,28 +15,29 @@ import java.util.UUID;
 @Document(collection = "invoices")
 public class InvoiceEntity {
   @Id
-  private UUID idInvoice;
-  private String customerId;
+  private String invoiceId;
+  private String clientId;
 
   private String orderId;
   private double value;
+  @Field("paymentDate")
   private Date paymentDate;
   private Boolean result;
 
-  public UUID getIdInvoice() {
-    return idInvoice;
+  public String getInvoiceId() {
+    return invoiceId;
   }
 
-  public void setIdInvoice(UUID idInvoice) {
-    this.idInvoice = idInvoice;
+  public void setInvoiceId(String invoiceId) {
+    this.invoiceId = invoiceId;
   }
 
-  public String getCustomerId() {
-    return customerId;
+  public String getClientId() {
+    return clientId;
   }
 
-  public void setCustomerId(String customerId) {
-    this.customerId = customerId;
+  public void setClientId(String clientId) {
+    this.clientId = clientId;
   }
 
   public String getOrderId() {

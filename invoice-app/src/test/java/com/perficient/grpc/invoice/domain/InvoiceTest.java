@@ -17,21 +17,12 @@ class InvoiceTest {
   }
 
   @Test
-  void getId() {
-    UUID uuid = UUID.randomUUID();
-
-    invoice.setId(uuid);
-
-    assertEquals(uuid, invoice.getId());
-  }
-
-  @Test
   void getCustomerId() {
     String client = "idClient";
 
-    invoice.setCustomerId(client);
+    invoice.setClientId(client);
 
-    assertEquals(client, invoice.getCustomerId());
+    assertEquals(client, invoice.getClientId());
   }
 
   @Test
