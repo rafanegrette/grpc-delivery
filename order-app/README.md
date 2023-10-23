@@ -10,9 +10,6 @@ is successful the client will receive an Order.
 ### Sequence Diagram
 ![plot](./img/grpc-order-Sequence.png)
 
-### Sequence Diagram
-![plot](./img/grpc-order-Sequence.png)
-
 ### Package Diagram
 Here we can see the Dependency Inversion principle, it's the business side of the application how controls the 
 dependencies, according to clean architecture.

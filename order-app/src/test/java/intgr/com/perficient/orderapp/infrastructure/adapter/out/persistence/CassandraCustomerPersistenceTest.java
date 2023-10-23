@@ -17,6 +17,8 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -73,6 +75,24 @@ class CassandraCustomerPersistenceTest {
 
         // Then
         assertEquals(customerGiven, customerReturned);
+    }
+
+
+    @Test
+    void should_save_empty_cart_success() {
+        // Given
+        CassandraCustomerPersistence customerPersistence = new CassandraCustomerPersistence(
+                cassandraCustomerRepository,cassandraCartRepository);
+        var cartGiven = CartMother.cart.build();
+        cartGiven.clean();
+
+        // When
+         customerPersistence.saveCart(cartGiven);
+
+        // Then
+        var customerReturned = cassandraCartRepository.findById(CartMother.ID);
+        assertEquals(BigDecimal.ZERO, customerReturned.get().getTotalPrice());
+        assertNull(customerReturned.get().getProductItemEntities().size());
     }
 
 }

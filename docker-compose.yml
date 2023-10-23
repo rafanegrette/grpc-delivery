@@ -25,4 +25,4 @@ services:
       timeout: 15s
       retries: 3
     ports:
-      - 9042:9042
+      - "9042:9042"

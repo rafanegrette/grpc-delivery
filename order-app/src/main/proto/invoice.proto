@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package invoice;
+
+option java_package = "com.perficient.proto.invoice";
+option java_multiple_files = true;
+
+message Invoice {
+  string invoice_id = 1;
+  string request_id = 2;
+  string client = 3;
+  string order_id = 4;
+  double value = 5;
+}
+
+message InvoiceRequest {
+  Invoice invoice = 1;
+}
+
+message InvoiceResponse {
+  Invoice invoice = 1;
+  bool result = 2;
+}
+
+message InvoiceManyTimesRequest {
+  int32 product_id = 1;
+  string client = 2;
+  double value = 3;
+}
+
+message InvoiceManyTimesResponse {
+  Invoice invoice = 1;
+}
+
+service InvoiceService {
+  //Unary
+  rpc Invoice(InvoiceRequest) returns (InvoiceResponse) {};
+
+  //Server stream
+  rpc InvoiceManyTimesServer(InvoiceManyTimesRequest) returns (stream InvoiceManyTimesResponse){};
+}

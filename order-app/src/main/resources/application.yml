@@ -11,3 +11,7 @@ spring:
       connect-timeout: 10s
       init-query-timeout: 10s
     local-datacenter: datacenter1
+apps:
+  product-app:
+    port: 6565
+    host: localhost
