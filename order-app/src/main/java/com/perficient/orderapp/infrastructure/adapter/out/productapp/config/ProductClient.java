@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Client {
+public class ProductClient {
 
     @Value("${apps.product-app.port}")
     private String productAppPort;

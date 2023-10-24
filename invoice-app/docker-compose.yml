@@ -1,4 +1,4 @@
-version: '3.9'
+version: '2.1'
 
 services:
   mongo:
@@ -6,5 +6,3 @@ services:
     container_name: mongo
     ports:
       - '27017:27017'
-    volumes:
-      - ./data:/data/db

@@ -92,7 +92,7 @@ class CassandraCustomerPersistenceTest {
         // Then
         var customerReturned = cassandraCartRepository.findById(CartMother.ID);
         assertEquals(BigDecimal.ZERO, customerReturned.get().getTotalPrice());
-        assertNull(customerReturned.get().getProductItemEntities().size());
+        assertNull(customerReturned.get().getProductItemEntities());
     }
 
 }
