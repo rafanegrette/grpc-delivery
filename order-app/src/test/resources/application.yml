@@ -1,4 +1,11 @@
 apps:
   product-app:
+    port: 6567
+    host: localhost
+  payment-app:
     port: 6565
     host: localhost
+grpc:
+  security:
+    auth:
+      enabled: false

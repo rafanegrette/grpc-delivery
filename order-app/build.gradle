@@ -28,12 +28,17 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-cassandra'
 	implementation 'io.grpc:grpc-testing:1.57.2'
 	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+	implementation 'org.springframework.security:spring-security-oauth2-resource-server'
+	implementation 'org.springframework.security:spring-security-config'
+	implementation 'org.springframework.security:spring-security-oauth2-jose'
 
 	implementation platform('org.testcontainers:testcontainers-bom:1.19.0') //import bom
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+
+	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation('org.testcontainers:cassandra')
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-web'

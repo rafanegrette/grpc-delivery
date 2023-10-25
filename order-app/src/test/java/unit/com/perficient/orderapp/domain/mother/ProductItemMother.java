@@ -8,6 +8,7 @@ import java.util.UUID;
 public class ProductItemMother {
     public static UUID product_id_1 = UUID.randomUUID();
     public static UUID product_id_2 = UUID.randomUUID();
+    public static BigDecimal TOTAL_PRICE = BigDecimal.valueOf(14.3);
 
     public static BigDecimal total_price = BigDecimal.valueOf(14.3);
     public static ProductItemBuilder product1 = new ProductItemBuilder()

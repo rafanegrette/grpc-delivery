@@ -28,3 +28,11 @@ Configuration steps for local environment:
    4) CREATE KEYSPACE order_keyspace WITH replication = { 'class': 'SimpleStrategy', 'replication_factor':1}
    5) exit
 4) execute in the root folder: ./gradlew bootRun 
+
+### Run with Oauth2 authentication mode
+
+Run the gradle application with the "prod" profile:
+
+```gradle
+./gradlew :order-app:bootRun --args='--spring.profiles.active=prod'
+```

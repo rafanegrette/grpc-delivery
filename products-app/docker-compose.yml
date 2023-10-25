@@ -1,7 +1,0 @@
-version: '3.1'
-services:
-  mycassandra:
-    image: cassandra
-    container_name: spring_cassandra
-    ports:
-      - "9042:9042"

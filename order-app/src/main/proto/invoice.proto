@@ -10,7 +10,7 @@ option java_multiple_files = true;
 message Invoice {
   string invoice_id = 1;
   string request_id = 2;
-  string client = 3;
+  string client_id = 3;
   string order_id = 4;
   double value = 5;
 }
@@ -36,7 +36,7 @@ message InvoiceManyTimesResponse {
 
 service InvoiceService {
   //Unary
-  rpc Invoice(InvoiceRequest) returns (InvoiceResponse) {};
+  rpc Payment(InvoiceRequest) returns (InvoiceResponse) {};
 
   //Server stream
   rpc InvoiceManyTimesServer(InvoiceManyTimesRequest) returns (stream InvoiceManyTimesResponse){};
