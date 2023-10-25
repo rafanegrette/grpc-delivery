@@ -1,6 +1,9 @@
 grpc:
   enableReflection: true
   port: 6566
+  security:
+    auth:
+      enabled: false
 spring:
   cassandra:
     schema-action: create-if-not-exists
@@ -11,6 +14,11 @@ spring:
       connect-timeout: 10s
       init-query-timeout: 10s
     local-datacenter: datacenter1
+  security:
+    oauth2:
+      resourceserver:
+        jwt.issuer-uri: https://accounts.google.com
+        jwt.jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
 apps:
   product-app:
     port: 6567
@@ -18,3 +26,14 @@ apps:
   payment-app:
     port: 6565
     host: localhost
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+grpc:
+  security:
+    auth:
+      enabled: true

@@ -1,4 +1,4 @@
-package com.perficient.orderapp.configuration;
+package com.perficient.orderapp.configuration.intersector;
 
 import io.grpc.ServerInterceptor;
 import io.grpc.ServerCall;

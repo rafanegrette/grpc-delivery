@@ -8,9 +8,11 @@ import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.PaymentServi
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import org.lognet.springboot.grpc.GRpcService;
+import org.springframework.security.access.annotation.Secured;
 
 import java.util.UUID;
 
+@Secured({})
 @GRpcService
 @RequiredArgsConstructor
 public class PayCartGrpc extends PaymentServiceGrpc.PaymentServiceImplBase {

@@ -4,19 +4,15 @@ import com.perficient.orderapp.domain.excepton.ProductNotFoundException;
 import com.perficient.orderapp.domain.mother.CartMother;
 import com.perficient.orderapp.domain.mother.CustomerMother;
 import com.perficient.orderapp.domain.mother.ProductItemMother;
-import com.perficient.orderapp.infrastructure.adapter.in.grpc.AddProductsToCartServiceGrpc;
 import com.perficient.orderapp.infrastructure.adapter.in.grpc.exception.ErrorHandler;
 import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.AddProductRequest;
 import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.CartServiceGrpc;
-import com.perficient.orderapp.infrastructure.adapter.out.persistence.config.CreateKeySpace;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.mapper.CartEntityMapper;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.mapper.CustomerEntityMapper;
-import com.perficient.orderapp.infrastructure.adapter.out.persistence.repository.CassandraCartRepository;
-import com.perficient.orderapp.infrastructure.adapter.out.persistence.repository.CassandraCustomerRepository;
-import com.perficient.orderapp.infrastructure.adapter.out.persistence.repository.CassandraOrderRepository;
 import com.perficient.orderapp.infrastructure.adapter.out.productapp.model.FetchProductsGrpc;
 import com.perficient.orderapp.infrastructure.adapter.out.productapp.model.MenuResponse;
 import io.grpc.Channel;
+import io.grpc.ClientInterceptors;
 import io.grpc.ManagedChannel;
 import io.grpc.StatusRuntimeException;
 import io.grpc.inprocess.InProcessChannelBuilder;
@@ -28,7 +24,9 @@ import org.springframework.boot.autoconfigure.data.cassandra.CassandraDataAutoCo
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.util.StringUtils;
@@ -44,11 +42,12 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@Import(SecurityConfiguration.class)
 @TestPropertySource(properties = {"grpc.inProcessServerName=testServerForCart",
         "grpc.enabled=false"})
 @ContextConfiguration(initializers = AddProductsITTest.TestAppContextInitializer.class)
 @EnableAutoConfiguration(exclude = CassandraDataAutoConfiguration.class)
-public class AddProductsITTest {
+public class AddProductsITTest extends DBConfigurations{
     static class TestAppContextInitializer implements ApplicationContextInitializer<GenericApplicationContext> {
         @Override
         public void initialize(GenericApplicationContext applicationContext) {
@@ -57,22 +56,14 @@ public class AddProductsITTest {
     }
 
     @MockBean
-    CassandraCustomerRepository cassandraCustomerRepository;
-    @MockBean
-    CassandraCartRepository cassandraCartRepository;
-    @MockBean
-    CassandraOrderRepository cassandraOrderRepository;
-    @MockBean
     FetchProductsGrpc.FetchProductsBlockingStub productsGrpcApi;
-    @MockBean
-    CreateKeySpace createKeySpace;
     protected ManagedChannel inProcChannel;
     protected Channel seletedChannel;
     @MockBean
     ErrorHandler errorHandler;
-
     @Autowired
     protected GRpcServerProperties gRpcServerProperties;
+
 
     @BeforeAll
     public void setupChannels() throws IOException {
@@ -84,7 +75,7 @@ public class AddProductsITTest {
         } else {
             fail( "No in-processChannel Available");
         }
-        seletedChannel = inProcChannel;
+        seletedChannel = ClientInterceptors.intercept(inProcChannel);
     }
 
     @AfterAll
@@ -93,11 +84,11 @@ public class AddProductsITTest {
     }
 
     @Test
+    @WithMockUser
     @DisplayName("Given a stream of valid product added- when finish - should return the summary cart")
     void addProductTest() throws InterruptedException {
 
         //Given
-
         CartServiceGrpc.CartServiceStub cartService = CartServiceGrpc.newStub(seletedChannel);
         var productRequest1 = AddProductRequest.newBuilder()
                 .setId(ProductItemMother.product_id_1.toString())

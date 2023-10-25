@@ -12,7 +12,7 @@ public class PaymentClient {
 
     @Value("${apps.payment-app.port}")
     private String paymentAppPort;
-    @Value("${apps.product-app.port}")
+    @Value("${apps.payment-app.host}")
     private String paymentAppHost;
 
     @Bean

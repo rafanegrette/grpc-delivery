@@ -6,12 +6,8 @@ import com.perficient.orderapp.domain.mother.CustomerMother;
 import com.perficient.orderapp.infrastructure.adapter.in.grpc.exception.ErrorHandler;
 import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.PaymentRequest;
 import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.PaymentServiceGrpc;
-import com.perficient.orderapp.infrastructure.adapter.out.persistence.config.CreateKeySpace;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.mapper.CartEntityMapper;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.mapper.CustomerEntityMapper;
-import com.perficient.orderapp.infrastructure.adapter.out.persistence.repository.CassandraCartRepository;
-import com.perficient.orderapp.infrastructure.adapter.out.persistence.repository.CassandraCustomerRepository;
-import com.perficient.orderapp.infrastructure.adapter.out.persistence.repository.CassandraOrderRepository;
 import com.perficient.proto.invoice.Invoice;
 import com.perficient.proto.invoice.InvoiceRequest;
 import com.perficient.proto.invoice.InvoiceResponse;
@@ -27,6 +23,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.cassandra.CassandraDataAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.util.StringUtils;
@@ -44,16 +41,11 @@ import static org.mockito.Mockito.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestPropertySource(properties = {"grpc.inProcessServerName=testServerForPayment",
         "grpc.enabled=false"})
+@Import(SecurityConfiguration.class)
 @ContextConfiguration(initializers = AddProductsITTest.TestAppContextInitializer.class)
 @EnableAutoConfiguration(exclude = CassandraDataAutoConfiguration.class)
-public class PayOrderITTest {
+public class PayOrderITTest extends DBConfigurations{
 
-    @MockBean
-    CassandraCustomerRepository cassandraCustomerRepository;
-    @MockBean
-    CassandraCartRepository cassandraCartRepository;
-    @MockBean
-    CassandraOrderRepository cassandraOrderRepository;
 
     @MockBean
     InvoiceServiceGrpc.InvoiceServiceBlockingStub invoiceServiceGrpcApi;
@@ -61,13 +53,12 @@ public class PayOrderITTest {
     @MockBean
     ErrorHandler errorHandler;
 
-    @MockBean
-    CreateKeySpace createKeySpace;
     protected ManagedChannel inProcChannel;
     protected Channel seletedChannel;
 
     @Autowired
     protected GRpcServerProperties gRpcServerProperties;
+
 
     @BeforeEach
     public void setupChannels() throws IOException {

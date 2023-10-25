@@ -34,12 +34,11 @@ public class PaymentAPI implements PaymentApp {
         try {
             InvoiceResponse invoiceResponse = invoiceServiceGrpcApi.payment(invoiceRequest);
 
-            PaymentDetails paymentDetails = PaymentDetails.builder()
+            return PaymentDetails.builder()
                     .paymentDate(LocalDateTime.now())
                     .amount(order.getTotalPrice())
-                    .id(UUID.fromString(invoiceResponse.getInvoice().getInvoiceId()))
+                    .id(UUID.nameUUIDFromBytes(invoiceResponse.getInvoice().getInvoiceId().getBytes()))
                     .build();
-            return paymentDetails;
         } catch (StatusRuntimeException ex) {
             throw new UnavailablePaymentException();
         }
