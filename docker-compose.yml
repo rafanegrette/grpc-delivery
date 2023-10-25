@@ -9,11 +9,41 @@ services:
       - SPRING_CASSANDRA_CONTACT_POINTS=cassandra-order-db
       - SPRING_CASSANDRA_LOCAL_DATACENTER=datacenter1
       - SPRING_CASSANDRA_PORT=9042
+      - APPS_PRODUCT_APP_HOST=products-app
+      - APPS_PRODUCT_APP_PORT=6567
+      - APPS_PAYMENT_APP_HOST=invoice-app
+      - APPS_PAYMENT_APP_PORT=6565
     depends_on:
       cassandra-order-db:
         condition: service_healthy
     ports:
       - "6566:6566"
+  products-app:
+    build:
+      context: ./products-app
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_DATA_CASSANDRA_CONTACT_POINTS=cassandra-order-db
+      - SPRING_DATA_CASSANDRA_LOCAL_DATACENTER=datacenter1
+      - SPRING_DATA_CASSANDRA_PORT=9042
+    depends_on:
+      cassandra-order-db:
+        condition: service_healthy
+    ports:
+      - "6567:6567"
+  invoice-app:
+    build:
+      context: ./invoice-app
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_DATA_MONGODB_HOST=mongo
+      - SPRING_DATA_MONGODB_DATABASE=mongodb
+      - SPRING_DATA_MONGODB_PORT=27017
+    depends_on:
+      cassandra-order-db:
+        condition: service_healthy
+    ports:
+      - "6565:6565"
   cassandra-order-db:
     image: cassandra:latest
     container_name: cassandra-db
@@ -26,3 +56,8 @@ services:
       retries: 3
     ports:
       - "9042:9042"
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - '27017:27017'
