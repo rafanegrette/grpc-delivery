@@ -8,6 +8,8 @@ import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.PaymentReque
 import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.PaymentServiceGrpc;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.mapper.CartEntityMapper;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.mapper.CustomerEntityMapper;
+import com.perficient.orderapp.ingrastructure.adapter.in.grpc.config.DBConfigurations;
+import com.perficient.orderapp.ingrastructure.adapter.in.grpc.config.SecurityConfiguration;
 import com.perficient.proto.invoice.Invoice;
 import com.perficient.proto.invoice.InvoiceRequest;
 import com.perficient.proto.invoice.InvoiceResponse;
@@ -42,9 +44,9 @@ import static org.mockito.Mockito.*;
 @TestPropertySource(properties = {"grpc.inProcessServerName=testServerForPayment",
         "grpc.enabled=false"})
 @Import(SecurityConfiguration.class)
-@ContextConfiguration(initializers = AddProductsITTest.TestAppContextInitializer.class)
+@ContextConfiguration(initializers = AddProductsTest.TestAppContextInitializer.class)
 @EnableAutoConfiguration(exclude = CassandraDataAutoConfiguration.class)
-public class PayOrderITTest extends DBConfigurations{
+public class PayOrderTest extends DBConfigurations {
 
 
     @MockBean

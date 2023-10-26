@@ -48,7 +48,7 @@ class PayOrderUseCaseTest {
                 LocalDateTime.now(),
                 BigDecimal.valueOf(50.0));
         given(paymentApp.executePayment(any(Order.class))).willReturn(paymentDetails);
-        given(retrieveCustomer.retrieve(customer.getId())).willReturn(customer);
+        given(retrieveCustomer.retrieveById(customer.getId())).willReturn(customer);
 
         // WHEN
         var orderReturned = payOrderUseCase.pay(customer.getId());

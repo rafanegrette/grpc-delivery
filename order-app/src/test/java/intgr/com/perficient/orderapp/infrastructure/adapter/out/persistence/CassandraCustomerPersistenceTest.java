@@ -71,7 +71,7 @@ class CassandraCustomerPersistenceTest {
         cassandraCartRepository.save(cartEntity);
 
         // When
-        var customerReturned = customerPersistence.retrieve(customerGiven.getId());
+        var customerReturned = customerPersistence.retrieveById(customerGiven.getId());
 
         // Then
         assertEquals(customerGiven, customerReturned);

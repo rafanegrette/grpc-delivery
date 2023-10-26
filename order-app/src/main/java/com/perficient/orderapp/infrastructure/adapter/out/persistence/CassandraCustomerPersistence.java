@@ -21,7 +21,7 @@ public class CassandraCustomerPersistence implements RetrieveCustomer, SaveCusto
     private final CassandraCartRepository cassandraCartRepository;
 
     @Override
-    public Customer retrieve(UUID customerId) {
+    public Customer retrieveById(UUID customerId) {
         var customerEntity = cassandraCustomerRepository.findById(customerId).orElseThrow();
         var cartEntity = cassandraCartRepository.findById(customerEntity.getCartId());
         var cart = CartEntityMapper.INSTANCE.map(cartEntity.orElseThrow());

@@ -46,11 +46,12 @@ public class ProductItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProductItem that = (ProductItem) o;
-        return id.equals(that.getId()) && name.equals(that.getName());
+        return id.toString().equals(that.getId().toString());
     }
+
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(category);
     }
 }

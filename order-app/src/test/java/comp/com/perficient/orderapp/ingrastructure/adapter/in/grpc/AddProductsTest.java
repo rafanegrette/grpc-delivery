@@ -11,6 +11,8 @@ import com.perficient.orderapp.infrastructure.adapter.out.persistence.mapper.Car
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.mapper.CustomerEntityMapper;
 import com.perficient.orderapp.infrastructure.adapter.out.productapp.model.FetchProductsGrpc;
 import com.perficient.orderapp.infrastructure.adapter.out.productapp.model.MenuResponse;
+import com.perficient.orderapp.ingrastructure.adapter.in.grpc.config.DBConfigurations;
+import com.perficient.orderapp.ingrastructure.adapter.in.grpc.config.SecurityConfiguration;
 import io.grpc.Channel;
 import io.grpc.ClientInterceptors;
 import io.grpc.ManagedChannel;
@@ -45,9 +47,9 @@ import static org.mockito.Mockito.*;
 @Import(SecurityConfiguration.class)
 @TestPropertySource(properties = {"grpc.inProcessServerName=testServerForCart",
         "grpc.enabled=false"})
-@ContextConfiguration(initializers = AddProductsITTest.TestAppContextInitializer.class)
+@ContextConfiguration(initializers = AddProductsTest.TestAppContextInitializer.class)
 @EnableAutoConfiguration(exclude = CassandraDataAutoConfiguration.class)
-public class AddProductsITTest extends DBConfigurations{
+public class AddProductsTest extends DBConfigurations {
     static class TestAppContextInitializer implements ApplicationContextInitializer<GenericApplicationContext> {
         @Override
         public void initialize(GenericApplicationContext applicationContext) {
@@ -73,7 +75,7 @@ public class AddProductsITTest extends DBConfigurations{
                     .usePlaintext()
                     .build();
         } else {
-            fail( "No in-processChannel Available");
+            fail("No in-processChannel Available");
         }
         seletedChannel = ClientInterceptors.intercept(inProcChannel);
     }
@@ -109,6 +111,7 @@ public class AddProductsITTest extends DBConfigurations{
         given(cassandraCustomerRepository.findById(CustomerMother.customerId)).willReturn(Optional.of(customerEntity));
         var cartEntity = CartEntityMapper.INSTANCE.map(CartMother.cart.build());
         given(cassandraCartRepository.findById(customerEntity.getCartId())).willReturn(Optional.of(cartEntity));
+
         // When
         var productsObserver = cartService.addProduct(cartResponseObserver);
         productsObserver.onNext(productRequest1);
@@ -146,17 +149,13 @@ public class AddProductsITTest extends DBConfigurations{
         given(cassandraCartRepository.findById(customerEntity.getCartId())).willReturn(Optional.of(cartEntity));
 
         // When
-            var productsObserver = cartService.addProduct(cartResponseObserver);
-            productsObserver.onNext(productRequest1);
-            productsObserver.onCompleted();
-            latch.await();
-
-
+        var productsObserver = cartService.addProduct(cartResponseObserver);
+        productsObserver.onNext(productRequest1);
+        productsObserver.onCompleted();
+        latch.await();
 
         // Then
         verify(errorHandler, times(1)).handle(any(ProductNotFoundException.class), any());
-
-
     }
 
 }

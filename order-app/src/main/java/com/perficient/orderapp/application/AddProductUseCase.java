@@ -22,12 +22,12 @@ public class AddProductUseCase {
         //verifyOrder(order);
         var productItem = retrieveProductItem.retrieve(productItemId);
         Cart cart = retrieveCart(customerId);
-        cart.addProduct(productItem);
+        cart.addProduct(productItem, quantity);
         saveCustomerCart.saveCart(cart);
     }
 
     public Cart retrieveCart(UUID customerId) {
-        return retrieveCustomer.retrieve(customerId).getCart();
+        return retrieveCustomer.retrieveById(customerId).getCart();
     }
 
 }
