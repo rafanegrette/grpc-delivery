@@ -23,10 +23,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @DataCassandraTest(
-        properties = { "spring.cassandra.schema-action=create-if-not-exists",
+        properties = {"spring.cassandra.schema-action=create-if-not-exists",
                 "spring.cassandra.connection.connect-timeout=120s",
                 "spring.cassandra.connection.init-query-timeout=60s",
-                "spring.cassandra.request.timeout=60s" }
+                "spring.cassandra.request.timeout=60s"}
 )
 @Import(KeyspaceTestConfiguration.class)
 @Testcontainers(disabledWithoutDocker = true)
@@ -48,7 +48,6 @@ class CassandraCustomerPersistenceTest {
         CassandraCustomerPersistence customerPersistence = new CassandraCustomerPersistence(
                 cassandraCustomerRepository, cassandraCartRepository);
         var cart = CartMother.cart.build();
-        var product1 = ProductItemMother.product1.build();
 
         // When
         customerPersistence.saveCart(cart);
@@ -62,7 +61,7 @@ class CassandraCustomerPersistenceTest {
     void should_retrieve_customer_with_cart_success() {
         // Given
         CassandraCustomerPersistence customerPersistence = new CassandraCustomerPersistence(
-                cassandraCustomerRepository,cassandraCartRepository);
+                cassandraCustomerRepository, cassandraCartRepository);
         var customerGiven = CustomerMother.customer.build();
         customerGiven.setCart(CartMother.cart.build());
         var customerEntity = CustomerEntityMapper.INSTANCE.map(customerGiven);
@@ -82,12 +81,12 @@ class CassandraCustomerPersistenceTest {
     void should_save_empty_cart_success() {
         // Given
         CassandraCustomerPersistence customerPersistence = new CassandraCustomerPersistence(
-                cassandraCustomerRepository,cassandraCartRepository);
+                cassandraCustomerRepository, cassandraCartRepository);
         var cartGiven = CartMother.cart.build();
         cartGiven.clean();
 
         // When
-         customerPersistence.saveCart(cartGiven);
+        customerPersistence.saveCart(cartGiven);
 
         // Then
         var customerReturned = cassandraCartRepository.findById(CartMother.ID);

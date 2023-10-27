@@ -26,7 +26,6 @@ public class JwtConfiguration {
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
         validators.add(new JwtTimestampValidator());
         validators.add(new JwtIssuerValidator(issuer));
-        //validators.add(new TokenSupplierValidator(List.of(StringUtils.split(androidClientId,","))));
         NimbusJwtDecoder jwtDecoder = (NimbusJwtDecoder) JwtDecoders.fromOidcIssuerLocation(issuer);
         jwtDecoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
         return jwtDecoder;

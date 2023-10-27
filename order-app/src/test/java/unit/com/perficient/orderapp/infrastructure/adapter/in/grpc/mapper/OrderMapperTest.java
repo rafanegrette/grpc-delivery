@@ -60,7 +60,7 @@ public class OrderMapperTest {
         assertEquals(orderResponseExpected.getOrderStatus(), orderResponseReturned.getOrderStatus());
         assertEquals(orderResponseExpected.getCustomerId(), orderResponseReturned.getCustomerId());
         orderResponseExpected.getProductsList().forEach(productResponseExpected ->
-            assertTrue(orderResponseReturned.getProductsList().contains(productResponseExpected))
+                assertTrue(orderResponseReturned.getProductsList().contains(productResponseExpected))
         );
     }
 

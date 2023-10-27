@@ -1,5 +1,7 @@
 package com.perficient.orderapp.application;
 
+import com.perficient.orderapp.domain.Cart;
+import com.perficient.orderapp.domain.excepton.EmptyCartException;
 import com.perficient.orderapp.domain.mother.CartMother;
 import com.perficient.orderapp.domain.mother.CustomerMother;
 import com.perficient.orderapp.domain.port.PaymentApp;
@@ -61,5 +63,20 @@ class PayOrderUseCaseTest {
         verify(saveCustomerCart, times(1)).saveCart(customer.getCart());
         assertEquals(0, customer.getCart().getProducts().size());
         assertEquals(BigDecimal.ZERO, customer.getCart().getTotalPrice());
+    }
+
+    @Test
+    void payOrder_without_products_should_throw_empty_cart() {
+        // GIVEN
+        var customer = CustomerMother.customer.build();
+        customer.setCart(new Cart());
+        given(retrieveCustomer.retrieveById(customer.getId())).willReturn(customer);
+
+        // WHEN
+        assertThrows(EmptyCartException.class, () ->
+                payOrderUseCase.pay(customer.getId())
+        );
+
+        // THEN
     }
 }

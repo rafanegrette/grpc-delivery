@@ -35,7 +35,7 @@ public class Cart {
         } else {
             products.put(product, quantity);
         }
-        totalPrice = totalPrice.add(product.getPrice());
+        totalPrice = totalPrice.add(product.getPrice().multiply(BigDecimal.valueOf(quantity)));
     }
 
     public void clean() {

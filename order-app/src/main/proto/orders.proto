@@ -12,7 +12,7 @@ message AddProductRequest {
 }
 
 message CartResponse {
-  string cartId  =1;
+  string cartId = 1;
   repeated ProductResponse products = 2;
   double totalPrice = 3;
 }

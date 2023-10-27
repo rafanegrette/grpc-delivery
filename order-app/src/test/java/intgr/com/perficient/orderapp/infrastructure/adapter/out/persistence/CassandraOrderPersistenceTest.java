@@ -24,10 +24,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @DataCassandraTest(
-        properties = { "spring.cassandra.schema-action=create-if-not-exists",
+        properties = {"spring.cassandra.schema-action=create-if-not-exists",
                 "spring.cassandra.connection.connect-timeout=120s",
                 "spring.cassandra.connection.init-query-timeout=60s",
-                "spring.cassandra.request.timeout=60s" }
+                "spring.cassandra.request.timeout=60s"}
 )
 @Import(KeyspaceTestConfiguration.class)
 @Testcontainers(disabledWithoutDocker = true)

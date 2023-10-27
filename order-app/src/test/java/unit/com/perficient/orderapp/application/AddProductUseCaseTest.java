@@ -54,6 +54,7 @@ class AddProductUseCaseTest {
         assertEquals(2, customer.getCart().getProducts().size());
         assertEquals(4, cart.getProducts().get(product1));
         assertEquals(3, cart.getProducts().get(product2));
+        assertEquals(52.9, cart.getTotalPrice().doubleValue());
     }
 
     @Test()

@@ -15,9 +15,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @UserDefinedType("payment_details")
 public class PaymentDetailsEntity {
-        @PrimaryKey
-        private UUID id;
-        private LocalDateTime paymentDate;
-        private BigDecimal amount;
+    @PrimaryKey
+    private UUID id;
+    private LocalDateTime paymentDate;
+    private BigDecimal amount;
 
 }

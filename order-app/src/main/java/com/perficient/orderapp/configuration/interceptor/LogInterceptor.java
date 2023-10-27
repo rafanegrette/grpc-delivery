@@ -1,4 +1,4 @@
-package com.perficient.orderapp.configuration.intersector;
+package com.perficient.orderapp.configuration.interceptor;
 
 import io.grpc.ServerInterceptor;
 import io.grpc.ServerCall;
@@ -10,7 +10,7 @@ import org.lognet.springboot.grpc.GRpcGlobalInterceptor;
 
 @Slf4j
 @GRpcGlobalInterceptor
-public class LogIntersector implements ServerInterceptor {
+public class LogInterceptor implements ServerInterceptor {
 
     @Override
     public <ReqT, RespT> ServerCall.Listener<ReqT> interceptCall(ServerCall<ReqT, RespT> call, Metadata headers, ServerCallHandler<ReqT, RespT> next) {

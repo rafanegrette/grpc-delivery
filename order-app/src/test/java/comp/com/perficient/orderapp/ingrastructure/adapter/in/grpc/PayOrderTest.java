@@ -1,5 +1,6 @@
 package com.perficient.orderapp.ingrastructure.adapter.in.grpc;
 
+import com.perficient.orderapp.domain.excepton.EmptyCartException;
 import com.perficient.orderapp.domain.excepton.UnavailablePaymentException;
 import com.perficient.orderapp.domain.mother.CartMother;
 import com.perficient.orderapp.domain.mother.CustomerMother;
@@ -136,10 +137,32 @@ public class PayOrderTest extends DBConfigurations {
 
         // When
 
-        Exception unavailablePaymentApp = assertThrows(Exception.class, () ->
+        assertThrows(Exception.class, () ->
                 paymentService.payOrder(paymentRequest)
         );
         // Then
         verify(errorHandler, times(1)).handle(any(UnavailablePaymentException.class), any());
+    }
+
+    @Test
+    @DisplayName("Given a Cart without products when pay should handle the exception")
+    void payOrderThrowEmptyCartException() throws InterruptedException {
+        // Given
+        var paymentService = PaymentServiceGrpc.newBlockingStub(seletedChannel);
+        var paymentRequest = PaymentRequest.newBuilder()
+                .setPaymentMethod("CASH")
+                .setCustomerId(CustomerMother.customerId.toString())
+                .build();
+        var customerEntity = CustomerEntityMapper.INSTANCE.map(CustomerMother.customer.build());
+
+        given(cassandraCustomerRepository.findById(CustomerMother.customerId)).willReturn(Optional.of(customerEntity));
+
+        // When
+
+        assertThrows(Exception.class, () ->
+                paymentService.payOrder(paymentRequest)
+        );
+        // Then
+        verify(errorHandler, times(1)).handle(any(EmptyCartException.class), any());
     }
 }

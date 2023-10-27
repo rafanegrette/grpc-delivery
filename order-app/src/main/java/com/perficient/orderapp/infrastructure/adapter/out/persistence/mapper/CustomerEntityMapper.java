@@ -14,7 +14,7 @@ public interface CustomerEntityMapper {
     @Mapping(source = "cart.id", target = "cartId")
     CustomerEntity map(Customer customer);
 
-    @Mapping(target  = "id", source = "customerId")
-    @Mapping(target  = "cart.id", source = "cartId")
+    @Mapping(target = "id", source = "customerId")
+    @Mapping(target = "cart.id", source = "cartId")
     Customer map(CustomerEntity customerEntity);
 }

@@ -72,6 +72,6 @@ public class ProductApiTest {
                 productApi.retrieve(productId)
         );
         // THEN
-        assertEquals("Product id: "+ productId + ", not found", productNotFound.getMessage());
+        assertEquals("Product id: " + productId + ", not found", productNotFound.getMessage());
     }
 }
