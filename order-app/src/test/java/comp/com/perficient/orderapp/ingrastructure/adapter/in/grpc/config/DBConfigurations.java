@@ -1,4 +1,4 @@
-package com.perficient.orderapp.ingrastructure.adapter.in.grpc;
+package com.perficient.orderapp.ingrastructure.adapter.in.grpc.config;
 
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.config.CreateKeySpace;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.repository.CassandraCartRepository;
@@ -11,9 +11,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 public class DBConfigurations {
 
     @MockBean
-    CassandraCustomerRepository cassandraCustomerRepository;
+    public CassandraCustomerRepository cassandraCustomerRepository;
     @MockBean
-    CassandraCartRepository cassandraCartRepository;
+    public CassandraCartRepository cassandraCartRepository;
     @MockBean
     CassandraOrderRepository cassandraOrderRepository;
 

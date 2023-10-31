@@ -1,5 +1,6 @@
 package com.perficient.orderapp.application;
 
+import com.perficient.orderapp.domain.Cart;
 import com.perficient.orderapp.domain.excepton.ProductNotFoundException;
 import com.perficient.orderapp.domain.mother.CustomerMother;
 import com.perficient.orderapp.domain.mother.ProductItemMother;
@@ -12,8 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -31,15 +31,16 @@ class AddProductUseCaseTest {
     AddProductUseCase addProductUseCase;
 
     @Test()
-    void add_product_to_cart_should_success() {
+    void add_product_to_cart_should_have_right_products_no() {
         // GIVEN
         var product_id_1 = ProductItemMother.product_id_1;
         var product_id_2 = ProductItemMother.product_id_2;
         var product1 = ProductItemMother.product1.build();
         var product2 = ProductItemMother.product2.build();
         var customer = CustomerMother.customer.build();
+        customer.setCart(new Cart());
 
-        given(retrieveCustomer.retrieve(customer.getId())).willReturn(customer);
+        given(retrieveCustomer.retrieveById(customer.getId())).willReturn(customer);
         given(retrieveProductItem.retrieve(product_id_1)).willReturn(product1);
         given(retrieveProductItem.retrieve(product_id_2)).willReturn(product2);
 
@@ -49,25 +50,33 @@ class AddProductUseCaseTest {
         addProductUseCase.addProductToCart(customer.getId(), product_id_1, 2);
 
         // THEN
+        var cart = customer.getCart();
         assertEquals(2, customer.getCart().getProducts().size());
-        verify(saveCustomerCart, times(3)).saveCart(customer.getCart());
+        assertEquals(4, cart.getProducts().get(product1));
+        assertEquals(3, cart.getProducts().get(product2));
+        assertEquals(52.9, cart.getTotalPrice().doubleValue());
     }
 
     @Test()
     void add_product_to_order_should_save_cart() {
         // GIVEN
-        var product_id_1 = UUID.randomUUID();
+        var product_id_1 = ProductItemMother.product_id_1;
+        var product_id_2 = ProductItemMother.product_id_2;
         var product1 = ProductItemMother.product1.build();
+        var product2 = ProductItemMother.product2.build();
         var customer = CustomerMother.customer.build();
 
+        given(retrieveCustomer.retrieveById(customer.getId())).willReturn(customer);
         given(retrieveProductItem.retrieve(product_id_1)).willReturn(product1);
-        given(retrieveCustomer.retrieve(customer.getId())).willReturn(customer);
+        given(retrieveProductItem.retrieve(product_id_2)).willReturn(product2);
 
         // WHEN
-        addProductUseCase.addProductToCart(customer.getId(), product_id_1, 1);
+        addProductUseCase.addProductToCart(customer.getId(), product_id_1, 2);
+        addProductUseCase.addProductToCart(customer.getId(), product_id_2, 3);
+        addProductUseCase.addProductToCart(customer.getId(), product_id_1, 2);
 
         // THEN
-        verify(saveCustomerCart, times(1)).saveCart(customer.getCart());
+        verify(saveCustomerCart, times(3)).saveCart(customer.getCart());
     }
 
     @Test()
@@ -86,7 +95,7 @@ class AddProductUseCaseTest {
         );
 
         // THEN
-        verify(retrieveCustomer, never()).retrieve(any());
+        verify(retrieveCustomer, never()).retrieveById(any());
         verify(saveCustomerCart, never()).saveCart(any());
     }
 

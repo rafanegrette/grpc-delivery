@@ -14,7 +14,8 @@ public interface ProductMapper {
 
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
-    ProductResponse map (ProductItem productItem);
+    ProductResponse map(ProductItem productItem);
+
     default List<ProductResponse> map(Map<ProductItem, Integer> productItem) {
         List<ProductResponse> productResponses = new ArrayList<>();
         productItem.forEach((product, quantity) -> {

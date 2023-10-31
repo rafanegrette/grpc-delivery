@@ -12,8 +12,8 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 public class PaymentDetails {
-        private UUID id;
-        private LocalDateTime paymentDate;
-        private BigDecimal amount;
+    private UUID id;
+    private LocalDateTime paymentDate;
+    private BigDecimal amount;
 
 }

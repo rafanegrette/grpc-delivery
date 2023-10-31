@@ -48,7 +48,7 @@ class PaymentAPITest {
                 .build();
         InvoiceResponse invoiceResponseWrapper = InvoiceResponse.newBuilder()
                 .setInvoice(invoiceResponse)
-                        .build();
+                .build();
         // When
         when(invoiceGrpcAPI.payment(invoiceRequest)).thenReturn(invoiceResponseWrapper);
         var paymentDetails = paymentAPI.executePayment(order);

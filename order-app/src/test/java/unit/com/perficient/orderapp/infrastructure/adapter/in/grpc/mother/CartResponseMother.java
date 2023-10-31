@@ -17,11 +17,11 @@ public class CartResponseMother {
     public static CartResponse.Builder cartResponse = CartResponse.newBuilder()
             .setCartId(cart.getId().toString())
             .addAllProducts(Set.of(ProductResponse.newBuilder()
-                    .setId(product1.getId().toString())
-                    .setName(product1.getName())
-                    .setQuantity(cart.getProducts().get(product1))
-                    .setPrice(product1.getPrice().doubleValue())
-                    .build(),
+                            .setId(product1.getId().toString())
+                            .setName(product1.getName())
+                            .setQuantity(cart.getProducts().get(product1))
+                            .setPrice(product1.getPrice().doubleValue())
+                            .build(),
                     ProductResponse.newBuilder()
                             .setId(product2.getId().toString())
                             .setName(product2.getName())

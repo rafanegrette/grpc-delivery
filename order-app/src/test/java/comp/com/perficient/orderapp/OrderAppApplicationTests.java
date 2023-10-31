@@ -23,40 +23,40 @@ import org.springframework.security.test.context.support.WithMockUser;
 @EnableAutoConfiguration(exclude = CassandraDataAutoConfiguration.class)
 class OrderAppApplicationTests {
 
-	@MockBean
-	CassandraCustomerRepository cassandraCustomerRepository;
-	@MockBean
-	CassandraCartRepository cassandraCartRepository;
-	@MockBean
-	CassandraOrderRepository cassandraOrderRepository;
+    @MockBean
+    CassandraCustomerRepository cassandraCustomerRepository;
+    @MockBean
+    CassandraCartRepository cassandraCartRepository;
+    @MockBean
+    CassandraOrderRepository cassandraOrderRepository;
 
-	@MockBean
-	CreateKeySpace createKeySpace;
+    @MockBean
+    CreateKeySpace createKeySpace;
 
-	@MockBean
-	GrpcSecurityConfiguration grpcSecurityConfiguration;
-	@MockBean
-	JwtConfiguration jwtConfiguration;
+    @MockBean
+    GrpcSecurityConfiguration grpcSecurityConfiguration;
+    @MockBean
+    JwtConfiguration jwtConfiguration;
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    void contextLoads() {
+    }
 
 
-	@TestConfiguration
-	static class TestCfg extends GrpcSecurityConfigurerAdapter {
+    @TestConfiguration
+    static class TestCfg extends GrpcSecurityConfigurerAdapter {
 
-		@MockBean
-		private JwtDecoder jwtDecoder;
+        @MockBean
+        private JwtDecoder jwtDecoder;
 
-		@Override
-		public void configure(GrpcSecurity builder) throws Exception {
-			builder.authorizeRequests()
-					.anyMethod()
-					.authenticated()
-					.and()
-					.authenticationProvider(JwtAuthProviderFactory
-							.forAuthorities(getContext().getBean(JwtDecoder.class)));
-		}
-	}
+        @Override
+        public void configure(GrpcSecurity builder) throws Exception {
+            builder.authorizeRequests()
+                    .anyMethod()
+                    .authenticated()
+                    .and()
+                    .authenticationProvider(JwtAuthProviderFactory
+                            .forAuthorities(getContext().getBean(JwtDecoder.class)));
+        }
+    }
 }

@@ -16,11 +16,11 @@ class ProductItemTest {
     public void testCreateProduct_ThrowInvalidProductItem() {
         UUID id = UUID.randomUUID();
         var exception = assertThrows(InvalidProductItemException.class, () ->
-            new ProductItem(id,
-                    "Donut",
-                    "Food",
-                    BigDecimal.valueOf(-2.5),
-                    BigDecimal.ZERO));
+                new ProductItem(id,
+                        "Donut",
+                        "Food",
+                        BigDecimal.valueOf(-2.5),
+                        BigDecimal.ZERO));
 
         assertEquals(ERROR_PRICE_LESS_THAN_0, exception.getMessage());
     }

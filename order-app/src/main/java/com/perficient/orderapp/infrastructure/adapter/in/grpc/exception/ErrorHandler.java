@@ -1,5 +1,6 @@
 package com.perficient.orderapp.infrastructure.adapter.in.grpc.exception;
 
+import com.perficient.orderapp.domain.excepton.EmptyCartException;
 import com.perficient.orderapp.domain.excepton.ProductNotFoundException;
 import com.perficient.orderapp.domain.excepton.UnavailablePaymentException;
 import io.grpc.Status;
@@ -20,6 +21,12 @@ public class ErrorHandler {
         return Status.UNAVAILABLE
                 .withCause(new UnavailablePaymentException())
                 .withDescription("The payment application is not available, contact support team");
+    }
 
+    @GRpcExceptionHandler
+    public Status handle(EmptyCartException ex, GRpcExceptionScope scope) {
+        return Status.INVALID_ARGUMENT
+                .withCause(new EmptyCartException())
+                .withDescription("Before the payment you need to add products to your cart");
     }
 }

@@ -32,9 +32,7 @@ public class ProductApi implements RetrieveProductItem {
             return ProductMapper.INSTANCE.map(menuResponse);
         } catch (StatusRuntimeException ex) {
             log.error("Exception in Product Application: ", ex.getMessage());
-            throw new ProductNotFoundException("Product id: "+ productId + ", not found");
+            throw new ProductNotFoundException("Product id: " + productId + ", not found");
         }
-
-        //return new ProductItem(productId, "Beans", "Vegetables", BigDecimal.valueOf(2.5), BigDecimal.ZERO);
     }
 }

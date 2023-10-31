@@ -1,4 +1,4 @@
-package com.perficient.orderapp.ingrastructure.adapter.in.grpc;
+package com.perficient.orderapp.ingrastructure.adapter.in.grpc.config;
 
 import com.perficient.orderapp.configuration.security.GrpcSecurityConfiguration;
 import com.perficient.orderapp.configuration.security.JwtConfiguration;

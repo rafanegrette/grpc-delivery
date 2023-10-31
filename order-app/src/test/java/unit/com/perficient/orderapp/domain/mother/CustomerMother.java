@@ -26,10 +26,12 @@ public class CustomerMother {
             this.name = name;
             return this;
         }
+
         public CustomerBuilder address(String address) {
             this.address = address;
             return this;
         }
+
         public Customer build() {
             return new Customer(id, name, address);
         }

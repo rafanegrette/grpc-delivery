@@ -8,6 +8,7 @@ import java.util.concurrent.CountDownLatch;
 public class CartStreamingObserver implements StreamObserver<CartResponse> {
     private final CountDownLatch latch;
     private CartResponse cartResponse;
+
     public CartStreamingObserver(CountDownLatch latch) {
         this.latch = latch;
     }

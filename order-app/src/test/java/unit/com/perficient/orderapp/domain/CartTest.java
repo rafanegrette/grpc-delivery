@@ -4,7 +4,6 @@ import com.perficient.orderapp.domain.mother.ProductItemMother;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,8 +19,8 @@ public class CartTest {
         var product2 = ProductItemMother.product2.build();
         var cart = new Cart();
         // WHEN
-        cart.addProduct(product1);
-        cart.addProduct(product2);
+        cart.addProduct(product1, 1);
+        cart.addProduct(product2, 1);
         var total = cart.getTotalPrice();
         // THEN
         assertEquals(ProductItemMother.TOTAL_PRICE, total);
@@ -36,8 +35,8 @@ public class CartTest {
         var product2 = ProductItemMother.product2.build();
         var cart = new Cart(UUID.randomUUID(), null, null);
         // WHEN
-        cart.addProduct(product1);
-        cart.addProduct(product2);
+        cart.addProduct(product1, 1);
+        cart.addProduct(product2, 1);
         var total = cart.getTotalPrice();
         // THEN
         assertEquals(ProductItemMother.TOTAL_PRICE, total);

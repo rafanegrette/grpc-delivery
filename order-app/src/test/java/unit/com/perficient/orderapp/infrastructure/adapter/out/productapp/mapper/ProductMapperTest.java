@@ -32,6 +32,6 @@ public class ProductMapperTest {
         var productReturned = ProductMapper.INSTANCE.map(menuResponse);
         // THEN
 
-        assertEquals(productExpected,productReturned);
+        assertEquals(productExpected, productReturned);
     }
 }

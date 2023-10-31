@@ -13,9 +13,9 @@ public interface CartEntityMapper {
 
     @Mapping(source = "products", target = "productItemEntities")
     @Mapping(source = "id", target = "cartId")
-    CartEntity map (Cart cart);
+    CartEntity map(Cart cart);
 
     @Mapping(source = "productItemEntities", target = "products")
     @Mapping(source = "cartId", target = "id")
-    Cart map (CartEntity cartEntity);
+    Cart map(CartEntity cartEntity);
 }

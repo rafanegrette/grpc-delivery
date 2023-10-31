@@ -1,5 +1,6 @@
 package com.perficient.orderapp.ingrastructure.adapter.in.grpc;
 
+import com.perficient.orderapp.domain.excepton.EmptyCartException;
 import com.perficient.orderapp.domain.excepton.UnavailablePaymentException;
 import com.perficient.orderapp.domain.mother.CartMother;
 import com.perficient.orderapp.domain.mother.CustomerMother;
@@ -8,6 +9,8 @@ import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.PaymentReque
 import com.perficient.orderapp.infrastructure.adapter.in.grpc.model.PaymentServiceGrpc;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.mapper.CartEntityMapper;
 import com.perficient.orderapp.infrastructure.adapter.out.persistence.mapper.CustomerEntityMapper;
+import com.perficient.orderapp.ingrastructure.adapter.in.grpc.config.DBConfigurations;
+import com.perficient.orderapp.ingrastructure.adapter.in.grpc.config.SecurityConfiguration;
 import com.perficient.proto.invoice.Invoice;
 import com.perficient.proto.invoice.InvoiceRequest;
 import com.perficient.proto.invoice.InvoiceResponse;
@@ -42,9 +45,9 @@ import static org.mockito.Mockito.*;
 @TestPropertySource(properties = {"grpc.inProcessServerName=testServerForPayment",
         "grpc.enabled=false"})
 @Import(SecurityConfiguration.class)
-@ContextConfiguration(initializers = AddProductsITTest.TestAppContextInitializer.class)
+@ContextConfiguration(initializers = AddProductsTest.TestAppContextInitializer.class)
 @EnableAutoConfiguration(exclude = CassandraDataAutoConfiguration.class)
-public class PayOrderITTest extends DBConfigurations{
+public class PayOrderTest extends DBConfigurations {
 
 
     @MockBean
@@ -134,10 +137,32 @@ public class PayOrderITTest extends DBConfigurations{
 
         // When
 
-        Exception unavailablePaymentApp = assertThrows(Exception.class, () ->
+        assertThrows(Exception.class, () ->
                 paymentService.payOrder(paymentRequest)
         );
         // Then
         verify(errorHandler, times(1)).handle(any(UnavailablePaymentException.class), any());
+    }
+
+    @Test
+    @DisplayName("Given a Cart without products when pay should handle the exception")
+    void payOrderThrowEmptyCartException() throws InterruptedException {
+        // Given
+        var paymentService = PaymentServiceGrpc.newBlockingStub(seletedChannel);
+        var paymentRequest = PaymentRequest.newBuilder()
+                .setPaymentMethod("CASH")
+                .setCustomerId(CustomerMother.customerId.toString())
+                .build();
+        var customerEntity = CustomerEntityMapper.INSTANCE.map(CustomerMother.customer.build());
+
+        given(cassandraCustomerRepository.findById(CustomerMother.customerId)).willReturn(Optional.of(customerEntity));
+
+        // When
+
+        assertThrows(Exception.class, () ->
+                paymentService.payOrder(paymentRequest)
+        );
+        // Then
+        verify(errorHandler, times(1)).handle(any(EmptyCartException.class), any());
     }
 }

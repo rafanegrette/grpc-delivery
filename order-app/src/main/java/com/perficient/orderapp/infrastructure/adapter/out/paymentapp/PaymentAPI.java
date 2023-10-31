@@ -10,11 +10,13 @@ import com.perficient.proto.invoice.InvoiceResponse;
 import com.perficient.proto.invoice.InvoiceServiceGrpc;
 import io.grpc.StatusRuntimeException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class PaymentAPI implements PaymentApp {
@@ -25,12 +27,12 @@ public class PaymentAPI implements PaymentApp {
     public PaymentDetails executePayment(Order order) {
 
         InvoiceRequest invoiceRequest = InvoiceRequest.newBuilder()
-                        .setInvoice(Invoice.newBuilder()
-                                .setValue(order.getTotalPrice().doubleValue())
-                                .setClientId(order.getCustomerId().toString())
-                                .setOrderId(order.getOrderId().toString())
-                                .build())
-                                .build();
+                .setInvoice(Invoice.newBuilder()
+                        .setValue(order.getTotalPrice().doubleValue())
+                        .setClientId(order.getCustomerId().toString())
+                        .setOrderId(order.getOrderId().toString())
+                        .build())
+                .build();
         try {
             InvoiceResponse invoiceResponse = invoiceServiceGrpcApi.payment(invoiceRequest);
 

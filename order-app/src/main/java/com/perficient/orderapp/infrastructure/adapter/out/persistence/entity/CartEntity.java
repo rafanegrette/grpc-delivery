@@ -15,9 +15,9 @@ import java.util.UUID;
 @Data
 @Table("Cart")
 public class CartEntity {
-        @PrimaryKey
-        private UUID cartId;
-        private Map<ProductItemEntity, Integer> productItemEntities;
-        private BigDecimal totalPrice;
+    @PrimaryKey
+    private UUID cartId;
+    private Map<ProductItemEntity, Integer> productItemEntities;
+    private BigDecimal totalPrice;
 
 }
