@@ -16,12 +16,14 @@ import java.util.logging.Logger;
 public class InvoiceInputAdapter extends InvoiceServiceGrpc.InvoiceServiceImplBase {
   private static final Logger logger = Logger.getLogger(InvoiceInputAdapter.class.getName());
   private final InvoiceUseCase invoiceUseCase;
+
   public InvoiceInputAdapter(InvoiceUseCase invoiceUseCase) {
     this.invoiceUseCase = invoiceUseCase;
   }
 
   @Override
   public void payment(InvoiceRequest request, StreamObserver<InvoiceResponse> responseObserver) {
+
     Invoice invoice = this.invoiceUseCase.createInvoice(request);
     if(!invoice.getId().equals("-1")) {
       InvoiceResponse response = InvoiceResponseMapper.INSTANCE.toInvoiceResponse(invoice);
