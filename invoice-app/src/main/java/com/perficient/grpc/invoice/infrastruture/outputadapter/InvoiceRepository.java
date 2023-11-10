@@ -6,11 +6,11 @@ import com.perficient.grpc.invoice.infrastruture.outputport.EntityRepository;
 import com.perficient.grpc.invoice.infrastruture.persistence.InvoiceEntity;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
+
 import java.util.logging.Logger;
 
 @Repository
 public class InvoiceRepository {
-  private static final Logger logger = Logger.getLogger(InvoiceRepository.class.getName());
   private final InvoiceEntityMapper invoiceEntityMapper;
   private final EntityRepository entityRepository;
 
@@ -19,7 +19,7 @@ public class InvoiceRepository {
     this.entityRepository = entityRepository;
   }
 
-  public Invoice saveInvoice(Invoice invoice){
+  public Invoice saveInvoice(Invoice invoice) {
     InvoiceEntity invoiceEntity = this.invoiceEntityMapper.toInvoiceEntity(invoice);
     this.entityRepository.save(invoiceEntity);
     InvoiceEntity entity = this.entityRepository.findAll(Sort.by(Sort.Order.desc("paymentDate"))).get(0);

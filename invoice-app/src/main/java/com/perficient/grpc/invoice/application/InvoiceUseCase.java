@@ -8,11 +8,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class InvoiceUseCase implements InvoiceService {
-  private final InvoiceMapper invoiceMapper;
+
   private final InvoiceRepository invoiceRepository;
 
-  public InvoiceUseCase(InvoiceMapper invoiceMapper, InvoiceRepository invoiceRepository) {
-    this.invoiceMapper = invoiceMapper;
+  public InvoiceUseCase(InvoiceRepository invoiceRepository) {
     this.invoiceRepository = invoiceRepository;
   }
 
@@ -21,10 +20,7 @@ public class InvoiceUseCase implements InvoiceService {
   }
 
   @Override
-  public Invoice createInvoice(InvoiceRequest request) {
-    //Llega invoice
-    //Este mapper debe estar    (infra no debe estar en el dominio)
-    Invoice invoice = this.invoiceMapper.toEntity(request);
+  public Invoice createInvoice(Invoice invoice) {
     if(validate(invoice)){
       return this.invoiceRepository.saveInvoice(invoice);
     }

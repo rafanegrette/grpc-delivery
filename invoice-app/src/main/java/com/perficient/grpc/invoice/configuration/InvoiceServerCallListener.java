@@ -1,12 +1,12 @@
-package com.perficient.grpc.invoice.utils;
+package com.perficient.grpc.invoice.configuration;
 
 import io.grpc.ForwardingServerCallListener;
 import io.grpc.ServerCall;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.logging.Logger;
 
+@Slf4j
 public class InvoiceServerCallListener<R> extends ForwardingServerCallListener<R> {
-  private final static Logger logger = Logger.getLogger(InvoiceServerCallListener.class.getName());
 
   private final ServerCall.Listener<R> delegate;
 
@@ -21,7 +21,7 @@ public class InvoiceServerCallListener<R> extends ForwardingServerCallListener<R
 
   @Override
   public void onMessage(R message) {
-    logger.info("Message Received from client -> Service "+ message);
+    log.info("Message Received from client -> Service " + message);
     super.onMessage(message);
   }
 }
