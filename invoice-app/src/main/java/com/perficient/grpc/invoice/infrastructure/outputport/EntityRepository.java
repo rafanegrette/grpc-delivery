@@ -1,8 +1,8 @@
-package com.perficient.grpc.invoice.infrastruture.outputport;
+package com.perficient.grpc.invoice.infrastructure.outputport;
 
 
 
-import com.perficient.grpc.invoice.infrastruture.persistence.InvoiceEntity;
+import com.perficient.grpc.invoice.infrastructure.persistence.InvoiceEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

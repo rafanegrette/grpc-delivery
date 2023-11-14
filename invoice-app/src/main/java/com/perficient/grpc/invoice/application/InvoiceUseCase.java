@@ -1,9 +1,7 @@
 package com.perficient.grpc.invoice.application;
 
 import com.perficient.grpc.invoice.domain.Invoice;
-import com.perficient.grpc.invoice.infrastruture.mapper.InvoiceMapper;
-import com.perficient.grpc.invoice.infrastruture.outputadapter.InvoiceRepository;
-import com.perficient.proto.invoice.InvoiceRequest;
+import com.perficient.grpc.invoice.infrastructure.outputadapter.InvoiceRepository;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,13 +1,11 @@
-package com.perficient.grpc.invoice.infrastruture.outputadapter;
+package com.perficient.grpc.invoice.infrastructure.outputadapter;
 
 import com.perficient.grpc.invoice.domain.Invoice;
-import com.perficient.grpc.invoice.infrastruture.mapper.InvoiceEntityMapper;
-import com.perficient.grpc.invoice.infrastruture.outputport.EntityRepository;
-import com.perficient.grpc.invoice.infrastruture.persistence.InvoiceEntity;
+import com.perficient.grpc.invoice.infrastructure.mapper.InvoiceEntityMapper;
+import com.perficient.grpc.invoice.infrastructure.outputport.EntityRepository;
+import com.perficient.grpc.invoice.infrastructure.persistence.InvoiceEntity;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
-
-import java.util.logging.Logger;
 
 @Repository
 public class InvoiceRepository {
