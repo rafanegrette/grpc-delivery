@@ -14,20 +14,19 @@ import java.util.UUID;
 public class AddProductUseCase {
 
 
-    private final RetrieveProductItem retrieveProductItem;
-    private final RetrieveCustomer retrieveCustomer;
-    private final SaveCustomerCart saveCustomerCart;
+  private final RetrieveProductItem retrieveProductItem;
+  private final RetrieveCustomer retrieveCustomer;
+  private final SaveCustomerCart saveCustomerCart;
 
-    public void addProductToCart(UUID customerId, UUID productItemId, int quantity) {
-        //verifyOrder(order);
-        var productItem = retrieveProductItem.retrieve(productItemId);
-        Cart cart = retrieveCart(customerId);
-        cart.addProduct(productItem, quantity);
-        saveCustomerCart.saveCart(cart);
-    }
+  public void addProductToCart(UUID customerId, UUID productItemId, int quantity) {
+    var productItem = retrieveProductItem.retrieve(productItemId);
+    Cart cart = retrieveCart(customerId);
+    cart.addProduct(productItem, quantity);
+    saveCustomerCart.saveCart(cart);
+  }
 
-    public Cart retrieveCart(UUID customerId) {
-        return retrieveCustomer.retrieveById(customerId).getCart();
-    }
+  public Cart retrieveCart(UUID customerId) {
+    return retrieveCustomer.retrieveById(customerId).getCart();
+  }
 
 }

@@ -1,7 +1,8 @@
 package com.perficient.grpc.invoice.application;
 
 import com.perficient.grpc.invoice.domain.Invoice;
-import com.perficient.grpc.invoice.infrastructure.outputadapter.InvoiceRepository;
+import com.perficient.grpc.invoice.domain.InvoiceRepository;
+import com.perficient.grpc.invoice.infrastructure.outputadapter.EntityRepository;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,7 +20,7 @@ public class InvoiceUseCase implements InvoiceService {
 
   @Override
   public Invoice createInvoice(Invoice invoice) {
-    if(validate(invoice)){
+    if (validate(invoice)) {
       return this.invoiceRepository.saveInvoice(invoice);
     }
     invoice.setId("-1");

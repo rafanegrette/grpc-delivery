@@ -42,7 +42,7 @@ class PayOrderUseCaseTest {
     PayOrderUseCase payOrderUseCase;
 
     @Test
-    void payOrder_should_success() {
+    void payOrder_should_success() throws InterruptedException {
         // GIVEN
         var customer = CustomerMother.customer.build();
         customer.setCart(CartMother.cart.build());

@@ -18,33 +18,33 @@ import static org.mockito.BDDMockito.given;
 @ExtendWith(MockitoExtension.class)
 public class PayOrderGrpcTest {
 
-    @Mock
-    PayOrderUseCase payOrderUseCase;
-    @InjectMocks
-    PayCartGrpc payCartGrpc;
+  @Mock
+  PayOrderUseCase payOrderUseCase;
+  @InjectMocks
+  PayCartGrpc payCartGrpc;
 
-    @Test
-    void payProducts() {
+  @Test
+  void payProducts() throws InterruptedException {
 
-        // Given
-        // cart = CartMother.cart.build;
-        PaymentRequest paymentRequest = PaymentRequest.newBuilder()
-                .setCustomerId(CustomerMother.customerId.toString())
-                .setPaymentMethod("Cash")
-                .build();
+    // Given
+    // cart = CartMother.cart.build;
+    PaymentRequest paymentRequest = PaymentRequest.newBuilder()
+        .setCustomerId(CustomerMother.customerId.toString())
+        .setPaymentMethod("Cash")
+        .build();
 
-        StreamRecorder<OrderResponse> orderResponseObserver = StreamRecorder.create();
-        given(payOrderUseCase.pay(CustomerMother.customerId)).willReturn(OrderMother.order.build());
+    StreamRecorder<OrderResponse> orderResponseObserver = StreamRecorder.create();
+    given(payOrderUseCase.pay(CustomerMother.customerId)).willReturn(OrderMother.order.build());
 
-        // When
-        payCartGrpc.payOrder(paymentRequest, orderResponseObserver);
+    // When
+    payCartGrpc.payOrder(paymentRequest, orderResponseObserver);
 
-        var orderList = orderResponseObserver.getValues();
+    var orderList = orderResponseObserver.getValues();
 
-        // Then
-        assertNotNull(orderList);
-        assertFalse(orderList.isEmpty());
-        assertNotEquals(0, orderList.get(0).getCreationDate().getSeconds());
-        assertEquals(OrderMother.AMOUNT.doubleValue(), orderList.get(0).getPaymentDetail().getAmount());
-    }
+    // Then
+    assertNotNull(orderList);
+    assertFalse(orderList.isEmpty());
+    assertNotEquals(0, orderList.get(0).getCreationDate().getSeconds());
+    assertEquals(OrderMother.AMOUNT.doubleValue(), orderList.get(0).getPaymentDetail().getAmount());
+  }
 }
