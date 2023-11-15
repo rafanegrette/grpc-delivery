@@ -39,6 +39,9 @@ services:
       - SPRING_DATA_MONGODB_HOST=mongo
       - SPRING_DATA_MONGODB_DATABASE=mongodb
       - SPRING_DATA_MONGODB_PORT=27017
+      - SPRING_DATA_CASSANDRA_CONTACT_POINTS=cassandra-order-db
+      - SPRING_DATA_CASSANDRA_LOCAL_DATACENTER=datacenter1
+      - SPRING_DATA_CASSANDRA_PORT=9042
     depends_on:
       cassandra-order-db:
         condition: service_healthy

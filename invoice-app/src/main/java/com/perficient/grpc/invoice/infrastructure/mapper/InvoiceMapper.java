@@ -1,7 +1,7 @@
-package com.perficient.grpc.invoice.infrastruture.mapper;
+package com.perficient.grpc.invoice.infrastructure.mapper;
 
 import com.perficient.grpc.invoice.domain.Invoice;
-import com.perficient.grpc.invoice.infrastruture.persistence.InvoiceEntity;
+import com.perficient.grpc.invoice.infrastructure.persistence.InvoiceEntity;
 import com.perficient.proto.invoice.InvoiceRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

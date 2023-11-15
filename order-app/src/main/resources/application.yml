@@ -26,7 +26,8 @@ apps:
   payment-app:
     port: 6565
     host: localhost
-
+    duration: 10000
+    credential: token
 ---
 
 spring:

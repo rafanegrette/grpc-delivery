@@ -24,6 +24,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'io.grpc:grpc-netty-shaded:1.38.0'
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-data-cassandra'
     implementation 'io.grpc:grpc-testing:1.57.2'

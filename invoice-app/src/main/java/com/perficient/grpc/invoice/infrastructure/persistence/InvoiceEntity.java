@@ -1,14 +1,11 @@
-package com.perficient.grpc.invoice.infrastruture.persistence;
+package com.perficient.grpc.invoice.infrastructure.persistence;
 
 
-import com.perficient.grpc.invoice.application.Exceptions.CustomException;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.UUID;
 
 //@Getter
 //@Setter

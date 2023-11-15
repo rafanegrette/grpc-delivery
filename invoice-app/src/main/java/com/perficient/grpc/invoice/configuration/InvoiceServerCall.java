@@ -1,4 +1,4 @@
-package com.perficient.grpc.invoice.utils;
+package com.perficient.grpc.invoice.configuration;
 
 import io.grpc.ForwardingServerCall;
 import io.grpc.MethodDescriptor;
@@ -6,7 +6,7 @@ import io.grpc.ServerCall;
 
 import java.util.logging.Logger;
 
-public class InvoiceServerCall <ReqT, RespT> extends ForwardingServerCall.SimpleForwardingServerCall<ReqT, RespT> {
+public class InvoiceServerCall<ReqT, RespT> extends ForwardingServerCall.SimpleForwardingServerCall<ReqT, RespT> {
   private static final Logger logger = Logger.getLogger(InvoiceServerCall.class.getName());
 
   public InvoiceServerCall(ServerCall<ReqT, RespT> delegate) {
@@ -14,7 +14,7 @@ public class InvoiceServerCall <ReqT, RespT> extends ForwardingServerCall.Simple
   }
 
   @Override
-  protected ServerCall<ReqT, RespT> delegate(){
+  protected ServerCall<ReqT, RespT> delegate() {
     return super.delegate();
   }
 

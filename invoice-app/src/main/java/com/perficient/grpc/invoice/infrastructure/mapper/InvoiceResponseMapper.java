@@ -1,4 +1,4 @@
-package com.perficient.grpc.invoice.infrastruture.mapper;
+package com.perficient.grpc.invoice.infrastructure.mapper;
 
 import com.perficient.grpc.invoice.domain.Invoice;
 import com.perficient.proto.invoice.InvoiceResponse;
