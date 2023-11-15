@@ -4,7 +4,7 @@
 
 The invoice application receives a unary request from the order application containing products and their values. Subsequently, the invoice application inserts the data into MongoDB and returns a unary response.
 
-### Use Case Diagram
+### Case Diagram
 
 ![plot](./images/Invoice.png)
 
